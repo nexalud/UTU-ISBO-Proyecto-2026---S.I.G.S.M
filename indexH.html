@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital de Clínicas</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ================= LOGIN ================= -->
+  <section id="login" class="pantalla login-section active">
+
+    <div class="fondo"></div>
+
+    <div class="login">
+
+      <div class="izquierda">
+        <div class="overlay"></div>
+      </div>
+
+      <div class="derecha">
+
+        <h1>Hospital de Clínicas</h1>
+        <p>Iniciar Sesión</p>
+
+        <div class="formulario">
+
+          <div class="grupo">
+            <label>Usuario</label>
+            <div class="input-box">
+              <input type="text" id="usuario" placeholder="Ingrese su usuario" required>
+            </div>
+          </div>
+
+          <div class="grupo">
+            <label>Contraseña</label>
+            <div class="input-box">
+              <input type="password" id="password" placeholder="Ingrese su contraseña" required>
+              <i class="fa-solid fa-eye-slash" id="ojo"></i>
+            </div>
+          </div>
+
+          <a href="#" class="olvido" style="display:block;text-align:center;">¿Olvidó su contraseña?</a>
+
+          <button type="button" onclick="ir('panel')">INGRESAR</button>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PANEL ================= -->
+  <section id="panel" class="pantalla panel">
+
+    <header class="panel-header">
+      <h2>Sistema Hospital de Clínicas</h2>
+      <button class="btn cerrar" onclick="ir('login')">Cerrar Sesión</button>
+    </header>
+
+    <div class="panel-centro">
+
+      <div class="panel-card">
+        <i class="fa-solid fa-folder-open icono"></i>
+        <h3>Documentación</h3>
+        <p>Gestionar documentos digitales.</p>
+        <button class="btn" onclick="ir('documentos')">Ingresar</button>
+      </div>
+
+      <div class="panel-card">
+        <i class="fa-solid fa-chart-column icono"></i>
+        <h3>Encuestas</h3>
+        <p>Registrar satisfacción de pacientes.</p>
+        <button class="btn" onclick="ir('encuestas')">Ingresar</button>
+      </div>
+
+      <div class="panel-card">
+        <i class="fa-solid fa-id-card icono"></i>
+        <h3>Documentación del Paciente</h3>
+        <p>Vista del documento accedido por QR.</p>
+        <button class="btn" onclick="abrirDoc('alta')">Ingresar</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= DOCUMENTACIÓN ================= -->
+  <section id="documentos" class="pantalla documentos" style="min-height:100vh;">
+
+    <header class="sub-header">
+      <h2>Gestión de Documentación</h2>
+      <button class="btn gris" onclick="ir('panel')">Volver</button>
+    </header>
+
+    <div class="documentos-contenido">
+
+      <div class="doc-carga">
+        <h3>Nuevo Documento</h3>
+        <input type="text" placeholder="Nombre del documento">
+        <input type="file">
+        <button class="btn">Guardar Documento</button>
+      </div>
+
+      <div class="doc-listado">
+        <h3>Documentos Cargados</h3>
+
+        <div class="doc-row">
+          <span>Alta Médica</span>
+          <button class="btn small" onclick="abrirDoc('alta')">QR</button>
+        </div>
+
+        <div class="doc-row">
+          <span>Resultado Estudio</span>
+          <button class="btn small" onclick="abrirDoc('estudio')">QR</button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= ENCUESTAS ================= -->
+  <section id="encuestas" class="pantalla encuestas" style="min-height:100vh;">
+
+    <header class="sub-header">
+      <h2>Módulo de Encuestas</h2>
+      <button class="btn gris" onclick="ir('panel')">Volver</button>
+    </header>
+
+    <div class="encuestas-contenido">
+
+      <div class="bloque">
+        <h3>Registrar Encuesta</h3>
+        <select>
+          <option>Excelente</option>
+          <option>Buena</option>
+          <option>Regular</option>
+          <option>Mala</option>
+        </select>
+        <textarea placeholder="Comentarios"></textarea>
+        <button class="btn">Guardar Respuesta</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= DOCUMENTACIÓN DEL PACIENTE (vista QR mobile-first) ================= -->
+  <section id="documento" class="pantalla documento-paciente" style="min-height:100vh;">
+
+    <div class="doc-paciente-wrap">
+
+      <div class="doc-paciente-header">
+        <img src="img-logo.png" alt="Logo" class="doc-logo" onerror="this.style.display='none'">
+        <div>
+          <h2>Hospital de Clínicas</h2>
+          <span class="doc-badge">Documento Oficial</span>
+        </div>
+      </div>
+
+      <div class="doc-paciente-card">
+        <div class="doc-paciente-titulo">
+          <i class="fa-solid fa-file-medical"></i>
+          <h3 id="dp-tipo"></h3>
+        </div>
+        <div class="doc-info-row">
+          <span class="doc-label">Paciente</span>
+          <span class="doc-valor" id="dp-paciente"></span>
+        </div>
+        <div class="doc-info-row">
+          <span class="doc-label">DNI</span>
+          <span class="doc-valor" id="dp-dni"></span>
+        </div>
+        <div class="doc-info-row">
+          <span class="doc-label">Fecha</span>
+          <span class="doc-valor" id="dp-fecha"></span>
+        </div>
+        <div class="doc-info-row">
+          <span class="doc-label">Médico tratante</span>
+          <span class="doc-valor" id="dp-medico"></span>
+        </div>
+        <div class="doc-info-row">
+          <span class="doc-label">Servicio</span>
+          <span class="doc-valor" id="dp-servicio"></span>
+        </div>
+        <div class="doc-info-row">
+          <span class="doc-label">Nº de documento</span>
+          <span class="doc-valor" id="dp-numero"></span>
+        </div>
+      </div>
+
+      <div class="doc-paciente-card">
+        <p class="doc-label" style="margin-bottom:8px">Diagnóstico / Hallazgos</p>
+        <p class="doc-observacion" id="dp-diagnostico"></p>
+      </div>
+
+      <div class="doc-paciente-card">
+        <p class="doc-label" style="margin-bottom:8px">Indicaciones médicas</p>
+        <p class="doc-observacion" id="dp-indicaciones"></p>
+      </div>
+
+      <div class="doc-qr-seccion">
+        <div class="qr-box"></div>
+        <p class="doc-label" style="text-align:center;margin-top:8px">Escanear para verificar autenticidad</p>
+        <p class="doc-numero-qr" id="dp-numero-qr"></p>
+      </div>
+
+      <button class="btn gris" style="width:100%;margin-top:10px" onclick="ir('panel')">Volver al Panel</button>
+
+    </div>
+  </section>
+
+  <script>
+
+    // ---- BASE DE DATOS DE DOCUMENTOS ----
+    const documentos = {
+      alta: {
+        tipo:         "Alta Médica",
+        paciente:     "Juan Pérez",
+        dni:          "32.456.789",
+        fecha:        "06/06/2026",
+        medico:       "Dr. Carlos Martínez",
+        servicio:     "Clínica Médica",
+        numero:       "#HC-2026-0042",
+        diagnostico:  "Paciente cursó internación por neumonía adquirida en la comunidad, con evolución favorable bajo tratamiento antibiótico. Alta otorgada con buenas condiciones generales.",
+        indicaciones: "Reposo relativo por 48 horas. Amoxicilina 875mg cada 12hs por 5 días. Control ambulatorio con médico de cabecera en 7 días. Consultar ante fiebre mayor a 38°C o dificultad respiratoria."
+      },
+      estudio: {
+        tipo:         "Resultado de Estudio",
+        paciente:     "Juan Pérez",
+        dni:          "32.456.789",
+        fecha:        "04/06/2026",
+        medico:       "Dra. Ana Rodríguez",
+        servicio:     "Laboratorio Central",
+        numero:       "#LAB-2026-0198",
+        diagnostico:  "Hemograma completo: leucocitos 12.400/mm³ con predominio de neutrófilos (78%). Proteína C reactiva: 48 mg/L. Resto de parámetros dentro de valores normales.",
+        indicaciones: "Los valores de leucocitos y PCR son compatibles con proceso infeccioso en resolución. Se sugiere repetir hemograma en 10 días para control de normalización. No requiere conducta inmediata."
+      }
+    };
+
+    // ---- NAVEGACIÓN ----
+    function ir(id) {
+      document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    // ---- ABRIR DOCUMENTO CON DATOS DINÁMICOS ----
+    function abrirDoc(id) {
+      const d = documentos[id];
+      if (!d) return;
+      document.getElementById('dp-tipo').textContent         = d.tipo;
+      document.getElementById('dp-paciente').textContent     = d.paciente;
+      document.getElementById('dp-dni').textContent          = d.dni;
+      document.getElementById('dp-fecha').textContent        = d.fecha;
+      document.getElementById('dp-medico').textContent       = d.medico;
+      document.getElementById('dp-servicio').textContent     = d.servicio;
+      document.getElementById('dp-numero').textContent       = d.numero;
+      document.getElementById('dp-diagnostico').textContent  = d.diagnostico;
+      document.getElementById('dp-indicaciones').textContent = d.indicaciones;
+      document.getElementById('dp-numero-qr').textContent    = d.numero;
+      ir('documento');
+    }
+
+    // ---- LOGIN ----
+    const ojo      = document.getElementById("ojo");
+    const password = document.getElementById("password");
+    const usuario  = document.getElementById("usuario");
+
+    usuario.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); password.focus(); }
+    });
+
+    password.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); ir('panel'); }
+    });
+
+    ojo.addEventListener("click", () => {
+      if (password.type === "password") {
+        password.type = "text";
+        ojo.classList.replace("fa-eye-slash", "fa-eye");
+      } else {
+        password.type = "password";
+        ojo.classList.replace("fa-eye", "fa-eye-slash");
+      }
+    });
+
+  </script>
+
+</body>
+</html>
