@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sistema de Ambulancias</title>
+  <link rel="stylesheet" href="styleA.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ===================== HOME ===================== -->
+<div id="page-home" class="page activa">
+  <div class="hero">
+    <div class="hero-top">
+      <p class="hero-sub">Hospital de Clínicas</p>
+      <h1 class="hero-titulo">Sistema de<br>Ambulancias</h1>
+      <p class="hero-desc">Gestión de traslados</p>
+    </div>
+    <div class="hero-img">
+      <img src="/assets/ambulancia.jpg" alt="Ambulancia"/>
+    </div>
+    <nav class="hero-nav">
+      <a href="#" class="nav-bloque" onclick="ir('page-dashboard')">
+        <span class="nb-icon">📊</span><span>General</span>
+      </a>
+      <a href="#" class="nav-bloque" onclick="ir('page-ambulancias')">
+        <span class="nb-icon">🚑</span><span>Ambulancias</span>
+      </a>
+      <a href="#" class="nav-bloque" onclick="ir('page-choferes')">
+        <span class="nb-icon">👤</span><span>Choferes</span>
+      </a>
+      <a href="#" class="nav-bloque" onclick="ir('page-enfermeros')">
+        <span class="nb-icon">🩺</span><span>Acompañantes</span>
+      </a>
+      <a href="#" class="nav-bloque" onclick="ir('page-traslados')">
+        <span class="nb-icon">📋</span><span>Traslados</span>
+      </a>
+    </nav>
+  </div>
+</div>
+
+<!-- ===================== DASHBOARD ===================== -->
+<div id="page-dashboard" class="page">
+  <header class="inner-header">
+    <button class="btn-back" onclick="ir('page-home')">← Inicio</button>
+    <h2>General</h2>
+  </header>
+  <div class="inner-body">
+    <div class="tarjetas-grid">
+      <div class="tarjeta">
+        <span class="tarjeta-label">Ambulancias Disponibles</span>
+        <div class="tarjeta-num">2 <span class="total">/ 4</span></div>
+      </div>
+      <div class="tarjeta">
+        <span class="tarjeta-label">Traslados Activos</span>
+        <div class="tarjeta-num">1 <span class="total">/ 5</span></div>
+      </div>
+      <div class="tarjeta">
+        <span class="tarjeta-label">Choferes Disponibles</span>
+        <div class="tarjeta-num">3 <span class="total">/ 4</span></div>
+      </div>
+      <div class="tarjeta">
+        <span class="tarjeta-label">Enfermeros Disponibles</span>
+        <div class="tarjeta-num">3 <span class="total">/ 6</span></div>
+      </div>
+    </div>
+
+    <div class="dash-abajo">
+      <div class="caja" style="flex:2;min-width:260px">
+        <h2 class="caja-titulo">Traslados Activos</h2>
+        <div class="traslado-fila">
+          <div class="traslado-top">
+            <span class="etiqueta roja">AMB-001</span>
+            <span class="etiqueta borde">Paciente</span>
+            <span class="hora">Salida: 14:30 · Llegada: 15:15</span>
+          </div>
+          <div class="traslado-ruta">Hospital de Clínicas – Urgencias → Hospital San José</div>
+          <div class="traslado-chofer">Chofer: María González</div>
+        </div>
+      </div>
+      <div class="dash-lado">
+        <div class="caja">
+          <h2 class="caja-titulo">Estado de Ambulancias</h2>
+          <div class="lista-estado">
+            <div class="fila-estado"><span>AMB-001</span><span class="etiqueta roja pequeña">En servicio</span></div>
+            <div class="fila-estado"><span>AMB-002</span><span class="etiqueta verde pequeña">Disponible</span></div>
+            <div class="fila-estado"><span>AMB-003</span><span class="etiqueta verde pequeña">Disponible</span></div>
+            <div class="fila-estado"><span>AMB-004</span><span class="etiqueta gris pequeña">Mantenimiento</span></div>
+          </div>
+        </div>
+        <div class="caja">
+          <h2 class="caja-titulo">Personal de Turno</h2>
+          <div class="lista-estado">
+            <div class="fila-estado"><span>Mathias Gomez</span><span class="etiqueta borde pequeña">Tarde</span></div>
+            <div class="fila-estado"><span>Ezequiel Banfi</span><span class="etiqueta borde pequeña">Mañana</span></div>
+            <div class="fila-estado"><span>Thiago Leites</span><span class="etiqueta borde pequeña">Mañana</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== AMBULANCIAS ===================== -->
+<div id="page-ambulancias" class="page">
+  <header class="inner-header">
+    <button class="btn-back" onclick="ir('page-home')">← Inicio</button>
+    <h2>Ambulancias</h2>
+    <button class="btn-principal">+ Nueva</button>
+  </header>
+  <div class="inner-body">
+    <div class="tabla-caja">
+      <table>
+        <thead>
+          <tr><th>Estado</th><th>Código</th><th>Modelo</th><th>Base</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="etiqueta roja pequeña">En servicio</span></td>
+            <td class="mono">AMB-001</td><td>Mercedes Sprinter 2022</td><td>Hospital Central</td>
+            <td class="acciones"><button class="btn-icono">👁</button><button class="btn-icono">✏️</button><button class="btn-icono danger">🗑</button></td>
+          </tr>
+          <tr>
+            <td><span class="etiqueta verde pequeña">Disponible</span></td>
+            <td class="mono">AMB-002</td><td>Ford Transit 2021</td><td>Hospital Central</td>
+            <td class="acciones"><button class="btn-icono">👁</button><button class="btn-icono">✏️</button><button class="btn-icono danger">🗑</button></td>
+          </tr>
+          <tr>
+            <td><span class="etiqueta verde pequeña">Disponible</span></td>
+            <td class="mono">AMB-003</td><td>Mercedes Sprinter 2023</td><td>Hospital Central</td>
+            <td class="acciones"><button class="btn-icono">👁</button><button class="btn-icono">✏️</button><button class="btn-icono danger">🗑</button></td>
+          </tr>
+          <tr>
+            <td><span class="etiqueta gris pequeña">Mantenimiento</span></td>
+            <td class="mono">AMB-004</td><td>Renault Master 2020</td><td>Hospital Central</td>
+            <td class="acciones"><button class="btn-icono">👁</button><button class="btn-icono">✏️</button><button class="btn-icono danger">🗑</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CHOFERES ===================== -->
+<div id="page-choferes" class="page">
+  <header class="inner-header">
+    <button class="btn-back" onclick="ir('page-home')">← Inicio</button>
+    <h2>Choferes</h2>
+    <button class="btn-principal">+ Nuevo</button>
+  </header>
+  <div class="inner-body">
+    <div class="tarjetas-grid tres">
+      <div class="tarjeta"><span class="tarjeta-label">Total Choferes</span><div class="tarjeta-num">4</div></div>
+      <div class="tarjeta"><span class="tarjeta-label">Disponibles</span><div class="tarjeta-num verde-num">3</div></div>
+      <div class="tarjeta"><span class="tarjeta-label">En Servicio</span><div class="tarjeta-num rojo-num">1</div></div>
+    </div>
+    <div class="tabla-caja">
+      <table>
+        <thead>
+          <tr><th>Estado</th><th>Nombre</th><th>CI</th><th>Licencia</th><th>Teléfono</th><th>Turno</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="etiqueta verde pequeña">Disponible</span></td>
+            <td>Carlos Rodríguez</td><td class="mono">12345678</td><td class="mono">LC-2019-001</td><td>555-0101</td>
+            <td><span class="etiqueta borde pequeña">Mañana</span></td>
+            <td class="acciones"><button class="btn-icono">👁</button><button class="btn-icono">✏️</button><button class="btn-icono danger">🗑</button></td>
+          </tr>
+          <tr>
+            <td><span class="etiqueta roja pequeña">En servicio</span></td>
+            <td>María González</td><td class="mono">23456789</td><td class="mono">LC-2020-045</td><td>555-0102</td>
+            <td><span class="etiqueta borde pequeña">Tarde</span></td>
+            <td class="acciones"><button class="btn-icono">👁</button><button class="btn-icono">✏️</button><button class="btn-icono danger">🗑</button></td>
+          </tr>
+          <tr>
+            <td><span class="etiqueta verde pequeña">Disponible</span></td>
+            <td>José Martínez</td><td class="mono">34567890</td><td class="mono">LC-2018-123</td><td>555-0103</td>
+            <td><span class="etiqueta borde pequeña">Noche</span></td>
+            <td class="acciones"><button class="btn-icono">👁</button><button class="btn-icono">✏️</button><button class="btn-icono danger">🗑</button></td>
+          </tr>
+          <tr>
+            <td><span class="etiqueta verde pequeña">Disponible</span></td>
+            <td>Ana Fernández</td><td class="mono">45678901</td><td class="mono">LC-2021-078</td><td>555-0104</td>
+            <td><span class="etiqueta borde pequeña">Mañana</span></td>
+            <td class="acciones"><button class="btn-icono">👁</button><button class="btn-icono">✏️</button><button class="btn-icono danger">🗑</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ENFERMEROS / ACOMPAÑANTES ===================== -->
+<div id="page-enfermeros" class="page">
+  <header class="inner-header">
+    <button class="btn-back" onclick="ir('page-home')">← Inicio</button>
+    <h2>Acompañantes / Enfermeros</h2>
+    <button class="btn-principal">+ Nuevo</button>
+  </header>
+  <div class="inner-body">
+    <div class="tarjetas-grid tres">
+      <div class="tarjeta"><span class="tarjeta-label">Total Enfermeros</span><div class="tarjeta-num">6</div></div>
+      <div class="tarjeta"><span class="tarjeta-label">Disponibles</span><div class="tarjeta-num verde-num">3</div></div>
+      <div class="tarjeta"><span class="tarjeta-label">En Servicio</span><div class="tarjeta-num rojo-num">3</div></div>
+    </div>
+    <div class="tabla-caja">
+      <table>
+        <thead>
+          <tr><th>Estado</th><th>Nombre</th><th>CI</th><th>Lic. Médica</th><th>Teléfono</th><th>Turno</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="etiqueta roja pequeña">En servicio</span></td>
+            <td>Laura Pérez</td><td class="mono">56789012</td><td class="mono">LM-2020-034</td><td>555-0201</td>
+            <td><span class="etiqueta borde pequeña">Mañana</span></td>
+            <td class="acciones"><button class="btn-icono">👁</button><button class="btn-icono">✏️</button><button class="btn-icono danger">🗑</button></td>
+          </tr>
+          <tr>
+            <td><span class="etiqueta verde pequeña">Disponible</span></td>
+            <td>Diego López</td><td class="mono">67890123</td><td class="mono">LM-2019-089</td><td>555-0202</td>
+            <td><span class="etiqueta borde pequeña">Tarde</span></td>
+            <td class="acciones"><button class="btn-icono">👁</button><button class="btn-icono">✏️</button><button class="btn-icono danger">🗑</button></td>
+          </tr>
+          <tr>
+            <td><span class="etiqueta roja pequeña">En servicio</span></td>
+            <td>Roberto Torres</td><td class="mono">89012345</td><td class="mono">LM-2018-156</td><td>555-0204</td>
+            <td><span class="etiqueta borde pequeña">Mañana</span></td>
+            <td class="acciones"><button class="btn-icono">👁</button><button class="btn-icono">✏️</button><button class="btn-icono danger">🗑</button></td>
+          </tr>
+          <tr>
+            <td><span class="etiqueta verde pequeña">Disponible</span></td>
+            <td>Carmen Sánchez</td><td class="mono">90123456</td><td class="mono">LM-2020-067</td><td>555-0205</td>
+            <td><span class="etiqueta borde pequeña">Tarde</span></td>
+            <td class="acciones"><button class="btn-icono">👁</button><button class="btn-icono">✏️</button><button class="btn-icono danger">🗑</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TRASLADOS ===================== -->
+<div id="page-traslados" class="page">
+  <header class="inner-header">
+    <button class="btn-back" onclick="ir('page-home')">← Inicio</button>
+    <h2>Traslados</h2>
+    <button class="btn-principal" onclick="abrirModal()">+ Nuevo</button>
+  </header>
+  <div class="inner-body">
+    <div class="tarjetas-grid tres">
+      <div class="tarjeta"><span class="tarjeta-label">Total Traslados</span><div class="tarjeta-num">5</div></div>
+      <div class="tarjeta"><span class="tarjeta-label">En Tránsito</span><div class="tarjeta-num rojo-num">1</div></div>
+      <div class="tarjeta"><span class="tarjeta-label">Finalizados</span><div class="tarjeta-num verde-num">4</div></div>
+    </div>
+
+    <div class="caja">
+      <h2 class="caja-titulo">Traslados en Tránsito</h2>
+      <div class="tarjeta-traslado">
+        <div class="traslado-top entre">
+          <div class="traslado-top">
+            <strong>Traslado T1</strong>
+            <span class="etiqueta roja">En Tránsito</span>
+            <span class="etiqueta borde">Paciente</span>
+          </div>
+          <div class="acciones">
+            <button class="btn-finalizar">✔ Finalizar</button>
+            <button class="btn-icono">✏️</button>
+            <button class="btn-icono danger">🗑</button>
+          </div>
+        </div>
+        <div class="sub-texto">AMB-001 · María González</div>
+        <div class="info-grid">
+          <div><span class="etiqueta-campo">Origen</span><div>Hospital Central – Urgencias</div></div>
+          <div><span class="etiqueta-campo">Destino</span><div>Hospital San José – UCI</div></div>
+          <div><span class="etiqueta-campo">Salida</span><div>14:30</div></div>
+          <div><span class="etiqueta-campo">Llegada estimada</span><div>15:15</div></div>
+        </div>
+        <div class="caja-info-azul">Paciente CI: 11223344</div>
+        <div class="personal-grid">
+          <div class="personal-caja"><span class="etiqueta-campo">CHOFER</span><div>María González</div><div class="mono sub-texto">CI: 23456789</div></div>
+          <div class="personal-caja"><span class="etiqueta-campo">ENFERMEROS</span><div>Laura Pérez</div><div class="mono sub-texto">CI: 56789012</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="caja">
+      <h2 class="caja-titulo">🕘 Historial de Traslados</h2>
+      <div class="tarjeta-traslado">
+        <div class="traslado-top entre">
+          <div class="traslado-top">
+            <strong>Traslado T2</strong>
+            <span class="etiqueta verde">Finalizado</span>
+            <span class="etiqueta borde">Biológico</span>
+          </div>
+          <button class="btn-icono danger">🗑</button>
+        </div>
+        <div class="sub-texto">AMB-002 · José Martínez</div>
+        <div class="info-grid">
+          <div><span class="etiqueta-campo">Origen</span><div>Banco de Órganos Central</div></div>
+          <div><span class="etiqueta-campo">Destino</span><div>Hospital Universitario – Cirugía</div></div>
+          <div><span class="etiqueta-campo">Salida</span><div>22:00</div></div>
+          <div><span class="etiqueta-campo">Llegada</span><div>22:45</div></div>
+        </div>
+        <div class="caja-info-azul">Elemento: Riñón para trasplante · Tipo: Órgano · Recibo: REC-2026-0445</div>
+      </div>
+
+      <div class="tarjeta-traslado">
+        <div class="traslado-top entre">
+          <div class="traslado-top">
+            <strong>Traslado T3</strong>
+            <span class="etiqueta verde">Finalizado</span>
+            <span class="etiqueta borde">Químico</span>
+          </div>
+          <button class="btn-icono danger">🗑</button>
+        </div>
+        <div class="sub-texto">AMB-001 · María González</div>
+        <div class="info-grid">
+          <div><span class="etiqueta-campo">Origen</span><div>Farmacia Central</div></div>
+          <div><span class="etiqueta-campo">Destino</span><div>Clínica del Norte</div></div>
+          <div><span class="etiqueta-campo">Salida</span><div>09:00</div></div>
+          <div><span class="etiqueta-campo">Llegada</span><div>09:30</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL NUEVO TRASLADO ===================== -->
+<div class="modal-fondo" id="modal" onclick="cerrarModalFondo(event)">
+  <div class="modal-caja">
+    <div class="modal-cabecera">
+      <h2>Nuevo Traslado</h2>
+      <button onclick="cerrarModal()" class="btn-cerrar">✕</button>
+    </div>
+    <div class="modal-cuerpo">
+      <div class="form-grid">
+        <div class="campo"><label>Tipo de traslado</label><select><option>Paciente</option><option>Biológico</option><option>Químico</option></select></div>
+        <div class="campo"><label>Ambulancia</label><select><option>AMB-002 – Ford Transit 2021</option><option>AMB-003 – Mercedes Sprinter 2023</option></select></div>
+        <div class="campo"><label>Chofer</label><select><option>Carlos Rodríguez</option><option>José Martínez</option><option>Ana Fernández</option></select></div>
+        <div class="campo"><label>Enfermero / Acompañante</label><select><option>Diego López</option><option>Patricia Ramírez</option><option>Carmen Sánchez</option></select></div>
+        <div class="campo"><label>CI del Paciente</label><input type="text" placeholder="Ej: 12345678"/></div>
+        <div class="campo"><label>Origen</label><input type="text" placeholder="Lugar de salida"/></div>
+        <div class="campo"><label>Destino</label><input type="text" placeholder="Lugar de llegada"/></div>
+        <div class="campo"><label>Hora de Salida</label><input type="time"/></div>
+        <div class="campo"><label>Llegada Estimada</label><input type="time"/></div>
+        <div class="campo campo-completo"><label>Observaciones</label><textarea placeholder="Notas adicionales..."></textarea></div>
+      </div>
+    </div>
+    <div class="modal-pie">
+      <button class="btn-secundario" onclick="cerrarModal()">Cancelar</button>
+      <button class="btn-principal">Crear Traslado</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function ir(paginaId) {
+    event && event.preventDefault();
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('activa'));
+    document.getElementById(paginaId).classList.add('activa');
+    window.scrollTo(0, 0);
+  }
+
+  function abrirModal() {
+    document.getElementById('modal').classList.add('abierto');
+  }
+
+  function cerrarModal() {
+    document.getElementById('modal').classList.remove('abierto');
+  }
+
+  function cerrarModalFondo(e) {
+    if (e.target === document.getElementById('modal')) cerrarModal();
+  }
+</script>
+</body>
+</html>
