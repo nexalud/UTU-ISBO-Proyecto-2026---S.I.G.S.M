@@ -197,6 +197,10 @@ button:hover {
   font-size: 18px;
   font-weight: 900;
   line-height: 1.3;
+  position: relative;
+    top: 110px;
+    display: flex;
+    justify-content: center;
 }
 
 .sidebar-nav {
