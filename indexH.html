@@ -11,29 +11,19 @@
 
   <!-- ================= LOGIN ================= -->
   <section id="login" class="pantalla login-section active">
-
     <div class="fondo"></div>
-
     <div class="login">
-
-      <div class="izquierda">
-        <div class="overlay"></div>
-      </div>
-
+      <div class="izquierda"><div class="overlay"></div></div>
       <div class="derecha">
-
         <h1>Hospital de Clínicas</h1>
         <p>Iniciar Sesión</p>
-
         <div class="formulario">
-
           <div class="grupo">
             <label>Usuario</label>
             <div class="input-box">
               <input type="text" id="usuario" placeholder="Ingrese su usuario" required>
             </div>
           </div>
-
           <div class="grupo">
             <label>Contraseña</label>
             <div class="input-box">
@@ -41,13 +31,9 @@
               <i class="fa-solid fa-eye-slash" id="ojo"></i>
             </div>
           </div>
-
           <a href="#" class="olvido" style="display:block;text-align:center;">¿Olvidó su contraseña?</a>
-
           <button type="button" onclick="ir('panel')">INGRESAR</button>
-
         </div>
-
       </div>
     </div>
   </section>
@@ -55,197 +41,213 @@
   <!-- ================= PANEL ================= -->
   <section id="panel" class="pantalla panel">
 
-    <header class="panel-header">
-      <h2>Sistema Hospital de Clínicas</h2>
-      <button class="btn cerrar" onclick="ir('login')">Cerrar Sesión</button>
-    </header>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-img">
+      <div class="sidebar-brand">
+        
+        <h3>Hospital de Clínicas</h3>
+      </div>
+      </div>
+      <nav class="sidebar-nav">
+        <p class="sidebar-seccion">Módulos</p>
+        <button class="sidebar-item" onclick="ir('documentos')">
+          <i class="fa-solid fa-folder-open"></i> Documentación
+        </button>
+        <button class="sidebar-item" onclick="ir('encuestas')">
+          <i class="fa-solid fa-chart-column"></i> Encuestas
+        </button>
+        <p class="sidebar-seccion">Servicios</p>
+        <button class="sidebar-item sidebar-ambulancia" onclick="window.location.href='indexA.html'">
+          <i class="fa-solid fa-truck-medical"></i> Ambulancias
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="btn-cerrar-sesion" onclick="ir('login')">
+          <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+        </button>
+      </div>
+    </aside>
 
-    <div class="panel-centro">
-
-      <div class="panel-card">
-        <i class="fa-solid fa-folder-open icono"></i>
-        <h3>Documentación</h3>
-        <p>Gestionar documentos digitales.</p>
-        <button class="btn" onclick="ir('documentos')">Ingresar</button>
+    <!-- CONTENIDO -->
+    <main class="panel-main">
+      <div class="panel-main-header">
+        <div>
+          <h2>Bienvenido al Sistema</h2>
+          <span class="panel-fecha" id="panel-fecha"></span>
+        </div>
+        
       </div>
 
-      <div class="panel-card">
-        <i class="fa-solid fa-chart-column icono"></i>
-        <h3>Encuestas</h3>
-        <p>Registrar satisfacción de pacientes.</p>
-        <button class="btn" onclick="ir('encuestas')">Ingresar</button>
+      <!-- HERO -->
+      <div class="panel-hero">
+        <div class="panel-hero-content">
+          <h3>Resumen del día</h3>
+          <h2>Gestión clínica integrada</h2>
+          <p>Accedé a los módulos del sistema desde el menú lateral o desde los accesos rápidos de abajo.</p>
+          <div class="panel-stats">
+            <div class="panel-stat">
+              <div class="panel-stat-num">142</div>
+              <div class="panel-stat-label">Documentos activos</div>
+            </div>
+            <div class="panel-stat">
+              <div class="panel-stat-num">4.8</div>
+              <div class="panel-stat-label">Satisfacción media</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="panel-card">
-        <i class="fa-solid fa-id-card icono"></i>
-        <h3>Documentación del Paciente</h3>
-        <p>Vista del documento accedido por QR.</p>
-        <button class="btn" onclick="abrirDoc('alta')">Ingresar</button>
+      <!-- ACCESO RÁPIDO -->
+      <p class="panel-section-title">Acceso rápido</p>
+      <div class="panel-cards-wrap">
+        <div class="panel-card" onclick="ir('documentos')">
+          <div class="panel-card-icon teal"><i class="fa-solid fa-folder-open teal"></i></div>
+          <div class="panel-card-info"><h3>Documentación</h3><p>Gestionar documentos digitales</p></div>
+          <i class="fa-solid fa-chevron-right panel-card-arrow"></i>
+        </div>
+        <div class="panel-card" onclick="ir('encuestas')">
+          <div class="panel-card-icon purple"><i class="fa-solid fa-chart-column purple"></i></div>
+          <div class="panel-card-info"><h3>Encuestas</h3><p>Satisfacción de pacientes</p></div>
+          <i class="fa-solid fa-chevron-right panel-card-arrow"></i>
+        </div>
+        <div class="panel-card" onclick="window.location.href='indexA.html'">
+          <div class="panel-card-icon red"><i class="fa-solid fa-truck-medical red"></i></div>
+          <div class="panel-card-info"><h3>Ambulancias</h3><p>Seguimiento en tiempo real</p></div>
+          <i class="fa-solid fa-chevron-right panel-card-arrow" style="color:#e74c3c"></i>
+        </div>
       </div>
+    </main>
 
-    </div>
   </section>
 
   <!-- ================= DOCUMENTACIÓN ================= -->
-  <section id="documentos" class="pantalla documentos" style="min-height:100vh;">
-
+  <section id="documentos" class="pantalla documentos">
     <header class="sub-header">
-      <h2>Gestión de Documentación</h2>
-      <button class="btn gris" onclick="ir('panel')">Volver</button>
+      <h2><i class="fa-solid fa-folder-open" style="margin-right:10px;opacity:0.8"></i>Gestión de Documentación</h2>
+      <button class="btn-volver" onclick="ir('panel')"><i class="fa-solid fa-arrow-left" style="margin-right:6px"></i>Volver</button>
     </header>
-
     <div class="documentos-contenido">
-
       <div class="doc-carga">
-        <h3>Nuevo Documento</h3>
+        <h3><i class="fa-solid fa-plus" style="color:#1565a0;margin-right:8px"></i>Nuevo Documento</h3>
         <input type="text" placeholder="Nombre del documento">
-        <input type="file">
-        <button class="btn">Guardar Documento</button>
+        <input type="file" style="font-size:13px;color:#8a9ab0">
+        <button class="btn"><i class="fa-solid fa-floppy-disk"></i> Guardar Documento</button>
       </div>
-
       <div class="doc-listado">
-        <h3>Documentos Cargados</h3>
-
-        <div class="doc-row">
-          <span>Alta Médica</span>
-          <button class="btn small" onclick="abrirDoc('alta')">QR</button>
+        <h3><i class="fa-solid fa-list" style="color:#1565a0;margin-right:8px"></i>Documentos Cargados</h3>
+        <div class="buscador-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="buscador" placeholder="Buscar documento..." oninput="filtrarDocs()">
         </div>
-
-        <div class="doc-row">
-          <span>Resultado Estudio</span>
-          <button class="btn small" onclick="abrirDoc('estudio')">QR</button>
+        <div id="lista-docs">
+          <div class="doc-row" data-nombre="alta médica">
+            <span><i class="fa-solid fa-file-medical" style="color:#1565a0;margin-right:8px;font-size:13px"></i>Alta Médica</span>
+            <button class="btn small" onclick="abrirDoc('alta')"><i class="fa-solid fa-qrcode"></i> QR</button>
+          </div>
+          <div class="doc-row" data-nombre="resultado estudio">
+            <span><i class="fa-solid fa-flask" style="color:#6060cc;margin-right:8px;font-size:13px"></i>Resultado Estudio</span>
+            <button class="btn small" onclick="abrirDoc('estudio')"><i class="fa-solid fa-qrcode"></i> QR</button>
+          </div>
+          <div class="doc-row" data-nombre="historia clínica">
+            <span><i class="fa-solid fa-notes-medical" style="color:#0f9b90;margin-right:8px;font-size:13px"></i>Historia Clínica</span>
+            <button class="btn small" onclick="abrirDoc('alta')"><i class="fa-solid fa-qrcode"></i> QR</button>
+          </div>
         </div>
-
+        <p id="sin-resultados" style="display:none;font-size:13px;color:#aaa;text-align:center;padding:10px 0">Sin resultados</p>
       </div>
-
     </div>
   </section>
 
   <!-- ================= ENCUESTAS ================= -->
-  <section id="encuestas" class="pantalla encuestas" style="min-height:100vh;">
-
+  <section id="encuestas" class="pantalla encuestas">
     <header class="sub-header">
-      <h2>Módulo de Encuestas</h2>
-      <button class="btn gris" onclick="ir('panel')">Volver</button>
+      <h2><i class="fa-solid fa-chart-column" style="margin-right:10px;opacity:0.8"></i>Módulo de Encuestas</h2>
+      <button class="btn-volver" onclick="ir('panel')"><i class="fa-solid fa-arrow-left" style="margin-right:6px"></i>Volver</button>
     </header>
-
     <div class="encuestas-contenido">
-
-      <div class="bloque">
-        <h3>Registrar Encuesta</h3>
-        <select>
-          <option>Excelente</option>
-          <option>Buena</option>
-          <option>Regular</option>
-          <option>Mala</option>
-        </select>
-        <textarea placeholder="Comentarios"></textarea>
-        <button class="btn">Guardar Respuesta</button>
+      <div class="enc-left">
+        <div class="bloque">
+          <h3>Registrar nueva encuesta</h3>
+          <p class="sub">Completá su satisfacción tras la atención</p>
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#5a6a7a;margin-bottom:8px;display:block">Calificación general</label>
+            <div class="estrellas" id="estrellas">
+              <span class="estrella" data-v="1">★</span>
+              <span class="estrella" data-v="2">★</span>
+              <span class="estrella" data-v="3">★</span>
+              <span class="estrella" data-v="4">★</span>
+              <span class="estrella" data-v="5">★</span>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#5a6a7a;margin-bottom:8px;display:block">Nivel de satisfacción</label>
+            <div class="opciones-satisf" id="opciones-satisf">
+              <button class="op-btn" data-v="Excelente">😄 Excelente</button>
+              <button class="op-btn" data-v="Buena">🙂 Buena</button>
+              <button class="op-btn" data-v="Regular">😐 Regular</button>
+              <button class="op-btn" data-v="Mala">😞 Mala</button>
+            </div>
+          </div>
+          <div>
+            <label style="font-size:13px;font-weight:600;color:#5a6a7a;margin-bottom:8px;display:block">Comentarios</label>
+            <textarea placeholder="¿Qué podemos mejorar? ¿Qué destacás de la atención?"></textarea>
+          </div>
+          <button class="btn" id="btn-guardar-enc"><i class="fa-solid fa-paper-plane"></i> Guardar Respuesta</button>
+        </div>
       </div>
-
+      <div class="enc-right">
+        <div class="bloque">
+          <h3>Estadísticas</h3>
+          <div class="enc-stat-wrap">
+            <div class="enc-stat"><div class="enc-stat-num" id="stat-total">12</div><div class="enc-stat-label">Encuestas hoy</div></div>
+            <div class="enc-stat"><div class="enc-stat-num" id="stat-prom">4.6</div><div class="enc-stat-label">Promedio ★</div></div>
+          </div>
+        </div>
+        <div class="bloque">
+          <h3>Historial reciente</h3>
+          <div id="historial">
+            <div class="historial-item"><span class="hist-badge exc">Excelente</span><div class="hist-info"><p>Atención muy rápida y profesional</p><span>Hoy, 11:42</span></div></div>
+            <div class="historial-item"><span class="hist-badge bue">Buena</span><div class="hist-info"><p>El médico fue muy claro</p><span>Hoy, 10:15</span></div></div>
+            <div class="historial-item"><span class="hist-badge reg">Regular</span><div class="hist-info"><p>Mucha espera en guardia</p><span>Hoy, 09:03</span></div></div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- ================= DOCUMENTACIÓN DEL PACIENTE (vista QR mobile-first) ================= -->
-  <section id="documento" class="pantalla documento-paciente" style="min-height:100vh;">
+  <!-- ================= DOC PACIENTE (desde panel) ================= -->
+  
 
-    <div class="doc-paciente-wrap">
-
-      <div class="doc-paciente-header">
-        <img src="img-logo.png" alt="Logo" class="doc-logo" onerror="this.style.display='none'">
-        <div>
-          <h2>Hospital de Clínicas</h2>
-          <span class="doc-badge">Documento Oficial</span>
-        </div>
-      </div>
-
-      <div class="doc-paciente-card">
-        <div class="doc-paciente-titulo">
-          <i class="fa-solid fa-file-medical"></i>
-          <h3 id="dp-tipo"></h3>
-        </div>
-        <div class="doc-info-row">
-          <span class="doc-label">Paciente</span>
-          <span class="doc-valor" id="dp-paciente"></span>
-        </div>
-        <div class="doc-info-row">
-          <span class="doc-label">DNI</span>
-          <span class="doc-valor" id="dp-dni"></span>
-        </div>
-        <div class="doc-info-row">
-          <span class="doc-label">Fecha</span>
-          <span class="doc-valor" id="dp-fecha"></span>
-        </div>
-        <div class="doc-info-row">
-          <span class="doc-label">Médico tratante</span>
-          <span class="doc-valor" id="dp-medico"></span>
-        </div>
-        <div class="doc-info-row">
-          <span class="doc-label">Servicio</span>
-          <span class="doc-valor" id="dp-servicio"></span>
-        </div>
-        <div class="doc-info-row">
-          <span class="doc-label">Nº de documento</span>
-          <span class="doc-valor" id="dp-numero"></span>
-        </div>
-      </div>
-
-      <div class="doc-paciente-card">
-        <p class="doc-label" style="margin-bottom:8px">Diagnóstico / Hallazgos</p>
-        <p class="doc-observacion" id="dp-diagnostico"></p>
-      </div>
-
-      <div class="doc-paciente-card">
-        <p class="doc-label" style="margin-bottom:8px">Indicaciones médicas</p>
-        <p class="doc-observacion" id="dp-indicaciones"></p>
-      </div>
-
-      <div class="doc-qr-seccion">
-        <div class="qr-box"></div>
-        <p class="doc-label" style="text-align:center;margin-top:8px">Escanear para verificar autenticidad</p>
-        <p class="doc-numero-qr" id="dp-numero-qr"></p>
-      </div>
-
-      <button class="btn gris" style="width:100%;margin-top:10px" onclick="ir('panel')">Volver al Panel</button>
-
-    </div>
-  </section>
+  <!-- ================= DOC PACIENTE (desde QR) ================= -->
+  
 
   <script>
-
-    // ---- BASE DE DATOS DE DOCUMENTOS ----
+    // DOCUMENTOS
     const documentos = {
       alta: {
-        tipo:         "Alta Médica",
-        paciente:     "Juan Pérez",
-        dni:          "32.456.789",
-        fecha:        "06/06/2026",
-        medico:       "Dr. Carlos Martínez",
-        servicio:     "Clínica Médica",
-        numero:       "#HC-2026-0042",
-        diagnostico:  "Paciente cursó internación por neumonía adquirida en la comunidad, con evolución favorable bajo tratamiento antibiótico. Alta otorgada con buenas condiciones generales.",
+        tipo: "Alta Médica", paciente: "Juan Pérez", dni: "32.456.789",
+        fecha: "06/06/2026", medico: "Dr. Carlos Martínez", servicio: "Clínica Médica",
+        numero: "#HC-2026-0042",
+        diagnostico: "Paciente cursó internación por neumonía adquirida en la comunidad, con evolución favorable bajo tratamiento antibiótico. Alta otorgada con buenas condiciones generales.",
         indicaciones: "Reposo relativo por 48 horas. Amoxicilina 875mg cada 12hs por 5 días. Control ambulatorio con médico de cabecera en 7 días. Consultar ante fiebre mayor a 38°C o dificultad respiratoria."
       },
       estudio: {
-        tipo:         "Resultado de Estudio",
-        paciente:     "Juan Pérez",
-        dni:          "32.456.789",
-        fecha:        "04/06/2026",
-        medico:       "Dra. Ana Rodríguez",
-        servicio:     "Laboratorio Central",
-        numero:       "#LAB-2026-0198",
-        diagnostico:  "Hemograma completo: leucocitos 12.400/mm³ con predominio de neutrófilos (78%). Proteína C reactiva: 48 mg/L. Resto de parámetros dentro de valores normales.",
-        indicaciones: "Los valores de leucocitos y PCR son compatibles con proceso infeccioso en resolución. Se sugiere repetir hemograma en 10 días para control de normalización. No requiere conducta inmediata."
+        tipo: "Resultado de Estudio", paciente: "Juan Pérez", dni: "32.456.789",
+        fecha: "04/06/2026", medico: "Dra. Ana Rodríguez", servicio: "Laboratorio Central",
+        numero: "#LAB-2026-0198",
+        diagnostico: "Hemograma completo: leucocitos 12.400/mm³ con predominio de neutrófilos (78%). Proteína C reactiva: 48 mg/L. Resto de parámetros dentro de valores normales.",
+        indicaciones: "Los valores de leucocitos y PCR son compatibles con proceso infeccioso en resolución. Se sugiere repetir hemograma en 10 días para control de normalización."
       }
     };
 
-    // ---- NAVEGACIÓN ----
+    // NAVEGACIÓN
     function ir(id) {
       document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('active'));
       document.getElementById(id).classList.add('active');
     }
 
-    // ---- ABRIR DOCUMENTO CON DATOS DINÁMICOS ----
+    // ABRIR DOC CON DATOS
     function abrirDoc(id) {
       const d = documentos[id];
       if (!d) return;
@@ -262,29 +264,85 @@
       ir('documento');
     }
 
-    // ---- LOGIN ----
+    // BUSCADOR
+    function filtrarDocs() {
+      const q = document.getElementById('buscador').value.toLowerCase();
+      const filas = document.querySelectorAll('#lista-docs .doc-row');
+      let hay = false;
+      filas.forEach(f => {
+        const visible = (f.dataset.nombre || '').includes(q);
+        f.style.display = visible ? '' : 'none';
+        if (visible) hay = true;
+      });
+      document.getElementById('sin-resultados').style.display = hay ? 'none' : 'block';
+    }
+
+    // FECHA EN PANEL
+    const hoy = new Date();
+    document.getElementById('panel-fecha').textContent =
+      hoy.toLocaleDateString('es-UY', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+    // LOGIN
     const ojo      = document.getElementById("ojo");
     const password = document.getElementById("password");
     const usuario  = document.getElementById("usuario");
 
-    usuario.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") { e.preventDefault(); password.focus(); }
-    });
-
-    password.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") { e.preventDefault(); ir('panel'); }
-    });
-
+    usuario.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); password.focus(); } });
+    password.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); ir('panel'); } });
     ojo.addEventListener("click", () => {
-      if (password.type === "password") {
-        password.type = "text";
-        ojo.classList.replace("fa-eye-slash", "fa-eye");
-      } else {
-        password.type = "password";
-        ojo.classList.replace("fa-eye", "fa-eye-slash");
-      }
+      if (password.type === "password") { password.type = "text"; ojo.classList.replace("fa-eye-slash", "fa-eye"); }
+      else { password.type = "password"; ojo.classList.replace("fa-eye", "fa-eye-slash"); }
     });
 
+    // ESTRELLAS
+    let estrellasVal = 0;
+    document.querySelectorAll('.estrella').forEach(e => {
+      e.addEventListener('mouseover', () => {
+        const v = +e.dataset.v;
+        document.querySelectorAll('.estrella').forEach((s, i) => s.classList.toggle('active', i < v));
+      });
+      e.addEventListener('mouseout', () => {
+        document.querySelectorAll('.estrella').forEach((s, i) => s.classList.toggle('active', i < estrellasVal));
+      });
+      e.addEventListener('click', () => {
+        estrellasVal = +e.dataset.v;
+        document.querySelectorAll('.estrella').forEach((s, i) => s.classList.toggle('active', i < estrellasVal));
+      });
+    });
+
+    // OPCIONES SATISFACCIÓN
+    document.querySelectorAll('.op-btn').forEach(b => {
+      b.addEventListener('click', () => {
+        document.querySelectorAll('.op-btn').forEach(x => x.classList.remove('selected'));
+        b.classList.add('selected');
+      });
+    });
+
+    // GUARDAR ENCUESTA
+    let totalEnc = 12, sumEnc = 4.6 * 12;
+    document.getElementById('btn-guardar-enc').addEventListener('click', () => {
+      const sel = document.querySelector('.op-btn.selected');
+      const com = document.querySelector('.bloque textarea');
+      if (!sel && !estrellasVal) { alert('Completá al menos la calificación o el nivel de satisfacción.'); return; }
+      const valMap = { 'Excelente': 5, 'Buena': 4, 'Regular': 3, 'Mala': 2 };
+      const v     = estrellasVal || (sel ? valMap[sel.dataset.v] : 3);
+      const label = sel ? sel.dataset.v : 'Sin categoría';
+      const badgeMap = { 'Excelente': 'exc', 'Buena': 'bue', 'Regular': 'reg', 'Mala': 'mal', 'Sin categoría': 'reg' };
+      totalEnc++; sumEnc += v;
+      document.getElementById('stat-total').textContent = totalEnc;
+      document.getElementById('stat-prom').textContent  = (sumEnc / totalEnc).toFixed(1);
+      const h    = document.getElementById('historial');
+      const hora = new Date().toLocaleTimeString('es-UY', { hour: '2-digit', minute: '2-digit' });
+      const texto = com.value.trim() || 'Sin comentarios';
+      const item  = document.createElement('div');
+      item.className = 'historial-item';
+      item.innerHTML = `<span class="hist-badge ${badgeMap[label]}">${label}</span><div class="hist-info"><p>${texto}</p><span>Hoy, ${hora}</span></div>`;
+      h.prepend(item);
+      estrellasVal = 0;
+      document.querySelectorAll('.estrella').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.op-btn').forEach(x => x.classList.remove('selected'));
+      com.value = '';
+    });
   </script>
 
 </body>
