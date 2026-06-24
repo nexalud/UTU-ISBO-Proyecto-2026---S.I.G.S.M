@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hospital de Clínicas</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/styleH.css">
+  <link rel="stylesheet" href="/Proyecto/Modulo_Documentacion/Vista/assets/css/styleH.css">
 </head>
 <body>
 
@@ -41,84 +41,106 @@
   <!-- ================= PANEL ================= -->
   <section id="panel" class="pantalla panel">
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <div class="sidebar-img">
-      <div class="sidebar-brand">
-        
-        <h3>Hospital de Clínicas</h3>
-      </div>
-      </div>
-      <nav class="sidebar-nav">
-        <p class="sidebar-seccion">Módulos</p>
-        <button class="sidebar-item" onclick="ir('documentos')">
-          <i class="fa-solid fa-folder-open"></i> Documentación
-        </button>
-        <button class="sidebar-item" onclick="ir('encuestas')">
-          <i class="fa-solid fa-chart-column"></i> Encuestas
-        </button>
-        <p class="sidebar-seccion">Servicios</p>
-        <button class="sidebar-item sidebar-ambulancia" onclick="window.location.href='../../Modulo_Ambulancias/Vista/indexA.html'">
-          <i class="fa-solid fa-truck-medical"></i> Ambulancias
-        </button>
-      </nav>
-      <div class="sidebar-footer">
-        <button class="btn-cerrar-sesion" onclick="ir('login')">
-          <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
-        </button>
-      </div>
-    </aside>
-
-    <!-- CONTENIDO -->
-    <main class="panel-main">
-      <div class="panel-main-header">
-        <div>
-          <h2>Bienvenido al Sistema</h2>
-          <span class="panel-fecha" id="panel-fecha"></span>
+    <div class="panel-body">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-img">
+        <div class="sidebar-brand">
+          
+          <h3>Hospital de Clínicas</h3>
         </div>
-        
-      </div>
+        </div>
+        <nav class="sidebar-nav">
+          <p class="sidebar-seccion">Módulos</p>
+          <button class="sidebar-item" onclick="ir('documentos')">
+            <i class="fa-solid fa-folder-open"></i> Documentación
+          </button>
+          <button class="sidebar-item" onclick="ir('encuestas')">
+            <i class="fa-solid fa-chart-column"></i> Encuestas
+          </button>
+          <p class="sidebar-seccion">Servicios</p>
+          <button class="sidebar-item sidebar-ambulancia" onclick="window.location.href='/Proyecto/Modulo_Ambulancias/Vista/indexA.html'">
+            <i class="fa-solid fa-truck-medical"></i> Ambulancias
+          </button>
+        </nav>
+        <div class="sidebar-footer">
+          <button class="btn-cerrar-sesion" onclick="ir('login')">
+            <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+          </button>
+        </div>
+      </aside>
 
-      <!-- HERO -->
-      <div class="panel-hero">
-        <div class="panel-hero-content">
-          <h3>Resumen del día</h3>
-          <h2>Gestión clínica integrada</h2>
-          <p>Accedé a los módulos del sistema desde el menú lateral o desde los accesos rápidos de abajo.</p>
-          <div class="panel-stats">
-            <div class="panel-stat">
-              <div class="panel-stat-num">142</div>
-              <div class="panel-stat-label">Documentos activos</div>
-            </div>
-            <div class="panel-stat">
-              <div class="panel-stat-num">4.8</div>
-              <div class="panel-stat-label">Satisfacción media</div>
+      <!-- CONTENIDO -->
+      <main class="panel-main">
+        <div class="panel-main-header">
+          <div>
+            <h2>Bienvenido al Sistema</h2>
+            <span class="panel-fecha" id="panel-fecha"></span>
+          </div>
+          
+        </div>
+
+        <!-- HERO -->
+        <div class="panel-hero">
+          <div class="panel-hero-content">
+            <h3>Resumen del día</h3>
+            <h2>Gestión clínica integrada</h2>
+            <p>Accedé a los módulos del sistema desde el menú lateral o desde los accesos rápidos de abajo.</p>
+            <div class="panel-stats">
+              <div class="panel-stat">
+                <div class="panel-stat-num">142</div>
+                <div class="panel-stat-label">Documentos activos</div>
+              </div>
+              <div class="panel-stat">
+                <div class="panel-stat-num">4.8</div>
+                <div class="panel-stat-label">Satisfacción media</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- ACCESO RÁPIDO -->
-      <p class="panel-section-title">Acceso rápido</p>
-      <div class="panel-cards-wrap">
-        <div class="panel-card" onclick="ir('documentos')">
-          <div class="panel-card-icon teal"><i class="fa-solid fa-folder-open teal"></i></div>
-          <div class="panel-card-info"><h3>Documentación</h3><p>Gestionar documentos digitales</p></div>
-          <i class="fa-solid fa-chevron-right panel-card-arrow"></i>
+        <!-- ACCESO RÁPIDO -->
+        <p class="panel-section-title">Acceso rápido</p>
+        <div class="panel-cards-wrap">
+          <div class="panel-card" onclick="ir('documentos')">
+            <div class="panel-card-icon teal"><i class="fa-solid fa-folder-open teal"></i></div>
+            <div class="panel-card-info"><h3>Documentación</h3><p>Gestionar documentos digitales</p></div>
+            <i class="fa-solid fa-chevron-right panel-card-arrow"></i>
+          </div>
+          <div class="panel-card" onclick="ir('encuestas')">
+            <div class="panel-card-icon purple"><i class="fa-solid fa-chart-column purple"></i></div>
+            <div class="panel-card-info"><h3>Encuestas</h3><p>Satisfacción de pacientes</p></div>
+            <i class="fa-solid fa-chevron-right panel-card-arrow"></i>
+          </div>
+          <div class="panel-card" onclick="window.location.href='../Modulo_Ambulancias/Vista/indexA.html'">
+            <div class="panel-card-icon red"><i class="fa-solid fa-truck-medical red"></i></div>
+            <div class="panel-card-info"><h3>Ambulancias</h3><p>Seguimiento en tiempo real</p></div>
+            <i class="fa-solid fa-chevron-right panel-card-arrow" style="color:#e74c3c"></i>
+          </div>
         </div>
-        <div class="panel-card" onclick="ir('encuestas')">
-          <div class="panel-card-icon purple"><i class="fa-solid fa-chart-column purple"></i></div>
-          <div class="panel-card-info"><h3>Encuestas</h3><p>Satisfacción de pacientes</p></div>
-          <i class="fa-solid fa-chevron-right panel-card-arrow"></i>
-        </div>
-        <div class="panel-card" onclick="window.location.href='../Modulo_Ambulancias/Vista/indexA.html'">
-          <div class="panel-card-icon red"><i class="fa-solid fa-truck-medical red"></i></div>
-          <div class="panel-card-info"><h3>Ambulancias</h3><p>Seguimiento en tiempo real</p></div>
-          <i class="fa-solid fa-chevron-right panel-card-arrow" style="color:#e74c3c"></i>
-        </div>
-      </div>
-    </main>
 
+        <footer class="footer">
+          <div class="footer-contenido">
+
+              <div class="footer-logos">
+                  <img src="/Proyecto/hospitalLogo.png">
+                  <img src="/Proyecto/logo.jpg">
+                  <img class="footer-logo-pais" src="/Proyecto/nexalud.jpeg">
+              </div>
+
+              <div class="footer-contacto">
+                  Contacto:<br>
+                  nexaludisbo@gmail.com
+              </div>
+
+              <div class="footer-politica">
+                  <a href="#">Política y privacidad</a>
+              </div>
+
+          </div>
+        </footer>
+      </main>
+    </div>
   </section>
 
   <!-- ================= DOCUMENTACIÓN ================= -->
@@ -157,6 +179,26 @@
         <p id="sin-resultados" style="display:none;font-size:13px;color:#aaa;text-align:center;padding:10px 0">Sin resultados</p>
       </div>
     </div>
+    <footer class="footer">
+    <div class="footer-contenido">
+
+        <div class="footer-logos">
+            <img src="/Proyecto/hospitalLogo.png">
+            <img src="/Proyecto/logo.jpg">
+            <img class="footer-logo-pais" src="/Proyecto/nexalud.jpeg">
+        </div>
+
+        <div class="footer-contacto">
+            Contacto:<br>
+            nexaludisbo@gmail.com
+        </div>
+
+        <div class="footer-politica">
+            <a href="#">Política y privacidad</a>
+        </div>
+
+    </div>
+</footer>
   </section>
 
   <!-- ================= ENCUESTAS ================= -->
@@ -214,13 +256,27 @@
         </div>
       </div>
     </div>
+    <footer class="footer">
+    <div class="footer-contenido">
+
+        <div class="footer-logos">
+            <img src="/Proyecto/hospitalLogo.png">
+            <img src="/Proyecto/logo.jpg">
+            <img class="footer-logo-pais" src="/Proyecto/nexalud.jpeg">
+        </div>
+
+        <div class="footer-contacto">
+            Contacto:<br>
+            nexaludisbo@gmail.com
+        </div>
+
+        <div class="footer-politica">
+            <a href="#">Política y privacidad</a>
+        </div>
+
+    </div>
+</footer>
   </section>
-
-  <!-- ================= DOC PACIENTE (desde panel) ================= -->
-  
-
-  <!-- ================= DOC PACIENTE (desde QR) ================= -->
-  
 
   <script>
     // DOCUMENTOS
