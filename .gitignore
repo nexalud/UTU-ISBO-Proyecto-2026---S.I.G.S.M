@@ -1,0 +1,16 @@
+# ===== Archivos generados por el sistema operativo =====
+Thumbs.db
+desktop.ini
+
+# ===== Configuración del editor =====
+.vscode/
+*.code-workspace
+
+# ===== Respaldos y volcados locales de la base =====
+*_backup.sql
+*_dump.sql
+
+# ===== Registros y temporales =====
+*.log
+*.bak
+*.tmp
