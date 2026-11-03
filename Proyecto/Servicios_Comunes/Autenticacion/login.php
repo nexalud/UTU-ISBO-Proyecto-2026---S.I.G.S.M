@@ -7,12 +7,10 @@ require_once __DIR__ . '/UsuarioModelo.php';
 const INTENTOS_MAXIMOS = 5;
 const SEGUNDOS_BLOQUEO = 60;
 
-$destino = '../../Modulo_Documentacion/Controlador/inicio.php';
-
-// Si ya inicio sesion, va directo al panel
+// Si ya inicio sesion, va directo al panel (cada rol a su pagina de inicio)
 $actual = usuarioActual();
 if ($actual && puedeEntrarAlPanel($actual)) {
-    header('Location: ' . $destino);
+    header('Location: ' . urlInicio($actual, '../../'));
     exit;
 }
 
@@ -57,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             unset($_SESSION['intentos_login']);
             iniciarSesion($datos);
-            header('Location: ' . $destino, true, 303);
+            header('Location: ' . urlInicio($datos, '../../'), true, 303);
             exit;
         }
     }

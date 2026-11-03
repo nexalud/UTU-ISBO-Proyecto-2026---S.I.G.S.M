@@ -1095,3 +1095,153 @@ a:hover { color: var(--azul-oscuro); }
 .login-form > div > p { margin: 0; font-size: 15px; color: var(--texto-3); }
 .login-ayuda a { font-weight: 700; }
 .doc-celda .avatar { color: #fff; font-size: 15px; }
+
+/* ---------- Ambulancias ---------- */
+.estado.en-viaje { background: #e6f0fb; color: #0e4f80; text-decoration: none; }
+.estado-grande { font-size: 15px; padding: 8px 16px; }
+
+.campo input[type="datetime-local"] {
+  width: 100%;
+  min-height: 48px;
+  border: 1.5px solid var(--borde-input);
+  border-radius: 12px;
+  padding: 0 14px;
+  font: inherit;
+  font-size: 16px;
+  color: var(--texto);
+  background: #f8fafc;
+}
+
+.campo-boton { display: flex; gap: 8px; }
+.campo-boton input { flex: 1; min-width: 0; }
+.campo-boton .btn { min-height: 48px; }
+.texto-error { color: var(--rojo-texto) !important; font-weight: 600; }
+.info-ruta { margin: -6px 0 0; font-size: 14px; color: var(--azul); font-weight: 600; min-height: 1em; }
+
+.columna-ancha { flex: 3 1 520px; }
+.columna-ancha .formulario { flex: none; }
+.columna-angosta { flex: 2 1 320px; }
+.opciones-tarjeta.una-columna { grid-template-columns: 1fr; }
+
+.tabla-traslados td { vertical-align: top; }
+.tabla-traslados .codigo { display: block; font-size: 15px; color: var(--texto); }
+.tabla-traslados .recorrido { display: block; color: var(--texto); font-weight: 600; }
+.tabla .sub { display: block; font-size: 13px; color: var(--texto-3); font-weight: 400; }
+
+/* Linea de tiempo del ciclo del traslado */
+.pasos-traslado {
+  list-style: none;
+  margin: 0;
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+}
+
+.pasos-traslado li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--texto-3);
+}
+
+/* La rayita que une un paso con el siguiente */
+.pasos-traslado li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 9px;
+  left: calc(50% + 14px);
+  right: calc(-50% + 14px);
+  height: 3px;
+  border-radius: 3px;
+  background: var(--borde);
+}
+
+.pasos-traslado li.hecho:not(.actual)::after { background: var(--azul); }
+.pasos-traslado strong { font-size: 14px; color: var(--texto-2); }
+
+.paso-punto {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid var(--borde-input);
+  background: var(--blanco);
+}
+
+.pasos-traslado li.hecho .paso-punto { border-color: var(--azul); background: var(--azul); }
+.pasos-traslado li.actual .paso-punto { box-shadow: 0 0 0 5px rgba(21, 101, 160, 0.18); }
+.pasos-traslado li.actual strong { color: var(--azul); }
+
+.datos-traslado { grid-template-columns: 120px 1fr; }
+
+.horas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.horas div { display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border-radius: 12px; background: #f8fafc; border: 1px solid var(--borde-suave); }
+.horas span { font-size: 13px; color: var(--texto-3); font-weight: 600; }
+.horas strong { font-size: 22px; font-weight: 800; }
+.horas small { font-size: 12px; color: var(--texto-3); }
+
+.historial { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.historial li { padding-left: 14px; border-left: 3px solid var(--azul-suave); display: flex; flex-direction: column; gap: 2px; }
+.historial li > div { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; }
+.historial p { margin: 2px 0 0; font-size: 14px; color: var(--texto-2); }
+
+@media (max-width: 700px) {
+  .pasos-traslado { grid-template-columns: 1fr; gap: 14px; padding: 16px; }
+  .pasos-traslado li { flex-direction: row; text-align: left; gap: 10px; }
+  .pasos-traslado li::after { display: none; }
+  .horas { grid-template-columns: 1fr; }
+}
+.columna-lateral .formulario { flex: none; }
+.sidebar { flex-basis: 264px; }
+
+/* Boton para cambiar de idioma (lo agrega comun.js) */
+.boton-idioma {
+  align-self: flex-start;
+  margin-bottom: 8px;
+  padding: 6px 12px;
+  border: 1.5px solid var(--borde-input, #cbd5e1);
+  border-radius: 999px;
+  background: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--texto, #0f172a);
+  cursor: pointer;
+}
+.boton-idioma:hover { background: #f1f5f9; }
+.boton-idioma.flotante {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 50;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, .12);
+}
+
+/* Lo que tiene el atributo hidden no se muestra, aunque su clase le ponga display (ej: .campos-fila) */
+[hidden] { display: none !important; }
+
+/* Titulos de tabla que ordenan (comun.js) */
+.orden-boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+.orden-boton:hover { color: var(--azul, #1565a0); }
+.orden-flecha::after { content: '↕'; opacity: .35; }
+th[aria-sort] .orden-boton { color: var(--azul, #1565a0); }
+th[aria-sort="ascending"] .orden-flecha::after { content: '↑'; opacity: 1; }
+th[aria-sort="descending"] .orden-flecha::after { content: '↓'; opacity: 1; }

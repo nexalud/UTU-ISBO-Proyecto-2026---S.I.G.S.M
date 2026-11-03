@@ -10,14 +10,14 @@ class EncuestaModelo
         $this->db = conectarBD();
     }
 
-    // Busca la encuesta vigente asociada al QR de una categoria de tipo 'encuesta'
+    // Busca la encuesta abierta hoy en el area (categoria) de ese QR.
+    // Si hubiera mas de una abierta, se toma la mas nueva.
     public function buscarPorQr(string $codigoQr): ?array
     {
         $sql = "SELECT e.id_encuesta, e.titulo, e.descripcion, c.nombre AS categoria
                 FROM encuesta e
                 INNER JOIN categoria c ON c.id_categoria = e.id_categoria
                 WHERE c.codigo_qr = ?
-                  AND c.tipo_categoria = 'encuesta'
                   AND (e.fecha_inicio IS NULL OR e.fecha_inicio <= CURDATE())
                   AND (e.fecha_fin IS NULL OR e.fecha_fin >= CURDATE())
                 ORDER BY e.id_encuesta DESC

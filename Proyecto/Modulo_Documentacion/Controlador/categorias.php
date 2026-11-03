@@ -5,7 +5,7 @@ require_once __DIR__ . '/../../Servicios_Comunes/Seguridad/helpers.php';
 require_once __DIR__ . '/../Modelo/CategoriaModelo.php';
 
 require_once __DIR__ . '/../../Servicios_Comunes/Autenticacion/sesion.php';
-$usuarioActual = requerirFuncionario();
+$usuarioActual = requerirModulo('documentacion');
 
 $modelo = new CategoriaModelo();
 
@@ -39,9 +39,7 @@ foreach ($categorias as $c) {
     }
 }
 
-$cantidadPorTipo = array_count_values(array_column($categorias, 'tipo_categoria'));
-
-// Todos los QR apuntan a la pagina del paciente; si la categoria es de encuesta, esa pagina redirige
+// El QR lleva la direccion completa de la pagina del paciente
 $urlQrBase = urlServidor() . dirname($_SERVER['SCRIPT_NAME']) . '/paciente.php?qr=';
 
 $aviso = tomarAviso();

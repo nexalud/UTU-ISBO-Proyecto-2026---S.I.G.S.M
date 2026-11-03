@@ -1,19 +1,14 @@
 <?php
-// Punto de entrada de la encuesta del paciente.
-// El QR de cada categoria de tipo 'encuesta' apunta aca: encuesta.php?qr=QR-CAT-0004
+// Encuesta del paciente. Se llega desde la pagina del QR del area (boton "Responder encuesta"):
+// encuesta.php?qr=QR-CAT-0003 muestra la encuesta abierta de esa area.
 
+require_once __DIR__ . '/../../Servicios_Comunes/Seguridad/helpers.php';
 require_once __DIR__ . '/../Modelo/EncuestaModelo.php';
-
-session_start();
-
-function e(?string $texto): string
-{
-    return htmlspecialchars($texto ?? '', ENT_QUOTES, 'UTF-8');
-}
 
 $LARGO_MAXIMO = 500;
 
 $codigoQr  = trim($_GET['qr'] ?? '');
+$idDocumento = max(0, (int) ($_GET['doc'] ?? 0));   // si viene del lector de PDF, al terminar vuelve a ese documento
 $estado    = 'form';   // form | gracias | error
 $encuesta  = null;
 $preguntas = [];
@@ -99,7 +94,9 @@ if (!preg_match('/^[A-Za-z0-9-]{1,50}$/', $codigoQr)) {
                         // Post/Redirect/Get: si recargan la pagina no se guarda dos veces
                         unset($_SESSION['token_encuesta']);
                         $_SESSION['encuesta_enviada'][$idEncuesta] = true;
-                        header('Location: encuesta.php?qr=' . urlencode($codigoQr) . '&ok=1', true, 303);
+                        // La pagina del area usa esto para mostrar "Gracias" en vez del boton
+                        $_SESSION['encuestas_respondidas'][$idEncuesta] = true;
+                        header('Location: encuesta.php?qr=' . urlencode($codigoQr) . ($idDocumento ? '&doc=' . $idDocumento : '') . '&ok=1', true, 303);
                         exit;
                     }
                 }
@@ -118,5 +115,10 @@ if ($estado === 'form') {
 if ($estado === 'error') {
     http_response_code(404);
 }
+
+// A donde vuelve el paciente: al documento que estaba leyendo o a la lista del area
+$urlVolver = $idDocumento
+    ? '../../Modulo_Documentacion/Controlador/visor.php?id=' . $idDocumento
+    : '../../Modulo_Documentacion/Controlador/paciente.php?qr=' . urlencode($codigoQr);
 
 require __DIR__ . '/../Vista/encuesta.php';

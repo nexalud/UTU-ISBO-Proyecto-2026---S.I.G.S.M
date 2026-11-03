@@ -21,8 +21,15 @@
 
 | Módulo | Qué hace |
 |---|---|
-| **Documentación y encuestas** | El funcionario carga PDFs por categoría y cada categoría tiene un QR. El paciente lo escanea y ve los documentos desde el celular. Encuestas anónimas con resultados e indicadores. |
-| **Ambulancias** | Solicitudes de traslado, asignación de vehículo, chofer y enfermero, y seguimiento del estado. |
+| **Documentación y encuestas** | Cada área del hospital tiene **un solo QR**. El paciente lo escanea y ve desde el celular los documentos del área y, abajo, su encuesta anónima. El funcionario carga los PDF, arma las encuestas y ve los resultados. |
+| **Ambulancias** | Alta de traslados con vehículo, chofer y enfermero (o empresa externa), controles de compatibilidad y disponibilidad, seguimiento del estado de salida a regreso, flota y rutas. Los datos del paciente se traen por cédula desde la API del hospital (simulada en `Proyecto/API_Pacientes`). |
+
+| Rol | Entra a |
+|---|---|
+| Administrador | Todo, más la gestión de usuarios |
+| Administrativo de documentación | Documentos, categorías y encuestas |
+| Administrativo de ambulancias | Traslados, flota y rutas |
+| Chofer / Enfermero | No entran al sistema: se asignan a los traslados |
 
 ## ✦ Equipo Nexalud
 
@@ -62,9 +69,10 @@ Seleccioná `sigsm` → **Importar**, en este orden:
 
 | # | Archivo | Para qué |
 |:-:|---|---|
-| 1 | `BaseDatos/sigsm.sql` | Tablas y datos iniciales |
-| 2 | `BaseDatos/actualizacion_tercera_entrega.sql` | Cambios de la 3ra entrega |
-| 3 | `BaseDatos/datos_prueba_encuestas.sql` | Respuestas de prueba *(opcional)* |
+| 1 | `BaseDatos/sigsm.sql` | Tablas, vistas, áreas del hospital, roles y usuarios |
+| 2 | `BaseDatos/datos_prueba.sql` | Respuestas de encuestas y traslados de ejemplo para la demo *(opcional)* |
+
+> `BaseDatos/usuarios_bd.sql` crea los usuarios de la base (`sigsm_admin` con todo, `sigsm_app` con permisos limitados). En XAMPP es opcional; en el servidor se usa siempre (paso 5).
 
 **4 · Contraseña del administrador**
 
@@ -79,6 +87,8 @@ C:\xampp\php\php.exe -S localhost:8000
 ```
 
 Abrí **http://localhost:8000** y entrá con `eBanfi`. ✔
+
+> Para probar los otros roles, poné contraseña a `tLeites` (documentación) o `mGomez` (ambulancias) con el mismo comando.
 
 <details>
 <summary><b>Correo para recuperar contraseñas</b> <sub>(opcional)</sub></summary>
@@ -214,9 +224,14 @@ sudo docker compose ps
 **5 · Cargar la base**
 
 ```bash
-for f in sigsm.sql actualizacion_tercera_entrega.sql datos_prueba_encuestas.sql; do
+for f in sigsm.sql datos_prueba.sql; do
   sudo docker exec -i sigsm_db sh -c 'mariadb -u root -p"$MARIADB_ROOT_PASSWORD" sigsm' < app/BaseDatos/$f
 done
+
+# Usuarios de la base con permisos limitados.
+# En la copia, cambiá CAMBIAR_clave_app por el DB_PASSWORD del .env y CAMBIAR_clave_admin por otra clave.
+cp app/BaseDatos/usuarios_bd.sql /tmp/usuarios.sql && nano /tmp/usuarios.sql
+sudo docker exec -i sigsm_db sh -c 'mariadb -u root -p"$MARIADB_ROOT_PASSWORD"' < /tmp/usuarios.sql && rm /tmp/usuarios.sql
 ```
 
 **6 · Permisos, contraseña y firewall**
@@ -255,7 +270,8 @@ cd /opt/sigsm && sudo docker compose restart app
 ├── Proyecto/
 │   ├── Modulo_Documentacion/   documentos, categorías, QR, inicio
 │   ├── Modulo_Encuestas/       encuestas y resultados
-│   ├── Modulo_Ambulancias/     traslados
+│   ├── Modulo_Ambulancias/     traslados, flota y rutas
+│   ├── API_Pacientes/          API de pacientes simulada (JSON)
 │   ├── Servicios_Comunes/      login, usuarios, correo, sesión
 │   └── assets/                 imágenes compartidas
 └── index.php               entrada → login

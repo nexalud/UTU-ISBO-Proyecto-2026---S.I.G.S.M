@@ -118,14 +118,14 @@ function formatoNumero(float $n): string
         <?php endforeach; ?>
 
         <section class="tarjeta tarjeta-qr">
-          <h2>QR de la encuesta</h2>
+          <h2>Dónde la ven los pacientes</h2>
           <?php if ($urlQr): ?>
             <div class="qr-contenido">
               <div class="qr-imagen" id="qr" data-url="<?= e($urlQr) ?>" role="img"
-                   aria-label="Código QR de la encuesta <?= e($encuesta['titulo']) ?>"></div>
+                   aria-label="Código QR del área <?= e($encuesta['categoria']) ?>"></div>
               <div>
-                <div class="qr-nombre"><?= e($encuesta['titulo']) ?></div>
-                <div class="qr-codigo"><?= e($encuesta['codigo_qr']) ?></div>
+                <div class="qr-nombre"><?= e($encuesta['categoria']) ?></div>
+                <div class="qr-codigo"><?= e($encuesta['codigo_qr']) ?> · aparece debajo de los documentos</div>
               </div>
               <div class="qr-botones">
                 <button type="button" class="btn btn-primario" id="btn-imprimir">
@@ -133,15 +133,15 @@ function formatoNumero(float $n): string
                   Imprimir
                 </button>
                 <button type="button" class="btn btn-secundario" id="btn-descargar"
-                        data-nombre="<?= e($encuesta['codigo_qr']) ?>" data-titulo="<?= e($encuesta['titulo']) ?>">
+                        data-nombre="<?= e($encuesta['codigo_qr']) ?>" data-titulo="<?= e($encuesta['categoria']) ?>">
                   <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12"></path><path d="M7 10l5 5 5-5"></path><path d="M4 21h16"></path></svg>
                   Descargar
                 </button>
               </div>
-              <a href="<?= e($urlQr) ?>" target="_blank" rel="noopener">Abrir la encuesta</a>
+              <a href="<?= e($urlQr) ?>" target="_blank" rel="noopener">Ver lo que ve el paciente</a>
             </div>
           <?php else: ?>
-            <div class="qr-vacio"><strong>Sin QR</strong><span>Esta encuesta no está asociada a una categoría.</span></div>
+            <div class="qr-vacio"><strong>Sin QR</strong><span>Esta encuesta no está en ningún área. Editala y elegí dónde aparece.</span></div>
           <?php endif; ?>
         </section>
       </div>
@@ -180,10 +180,10 @@ function formatoNumero(float $n): string
 
 <?php if ($urlQr): ?>
   <div class="qr-impresion" aria-hidden="true">
-    <h1><?= e($encuesta['titulo']) ?></h1>
+    <h1><?= e($encuesta['categoria']) ?></h1>
     <div id="qr-impresion"></div>
-    <p>Escaneá el código con la cámara del celular para responder la encuesta.</p>
-    <p>Es anónima y lleva menos de un minuto.</p>
+    <p>Escaneá el código con la cámara del celular para ver la información de esta área.</p>
+    <p>Hospital de Clínicas · S.I.G.S.M.</p>
   </div>
   <script src="../../Servicios_Comunes/Vista_General/assets/js/qrcode.js"></script>
   <script src="../../Servicios_Comunes/Vista_General/assets/js/qr_categoria.js"></script>

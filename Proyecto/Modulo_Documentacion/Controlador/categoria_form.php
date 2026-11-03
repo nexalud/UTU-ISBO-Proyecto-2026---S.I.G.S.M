@@ -5,7 +5,7 @@ require_once __DIR__ . '/../../Servicios_Comunes/Seguridad/helpers.php';
 require_once __DIR__ . '/../Modelo/CategoriaModelo.php';
 
 require_once __DIR__ . '/../../Servicios_Comunes/Autenticacion/sesion.php';
-$usuarioActual = requerirFuncionario();
+$usuarioActual = requerirModulo('documentacion');
 
 $modelo = new CategoriaModelo();
 
@@ -21,14 +21,10 @@ if ($idCategoria) {
     }
 }
 
-// Si ya tiene documentos o encuestas, no se puede cambiar el tipo
-$tipoBloqueado = $categoria && ((int) $categoria['documentos'] > 0 || (int) $categoria['encuestas'] > 0);
-
 $errores = [];
 $datos = [
     'nombre'      => $categoria['nombre'] ?? '',
     'descripcion' => $categoria['descripcion'] ?? '',
-    'tipo'        => $categoria['tipo_categoria'] ?? (array_key_exists($_GET['tipo'] ?? '', CategoriaModelo::TIPOS) ? $_GET['tipo'] : 'documental'),
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -37,9 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $datos['nombre']      = trim($_POST['nombre'] ?? '');
         $datos['descripcion'] = trim($_POST['descripcion'] ?? '');
-        if (!$tipoBloqueado) {
-            $datos['tipo'] = (string) ($_POST['tipo'] ?? '');
-        }
 
         $largo = mb_strlen($datos['nombre']);
         if ($largo < 3 || $largo > 100) {
@@ -52,19 +45,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errores['descripcion'] = 'La descripción puede tener hasta 255 caracteres.';
         }
 
-        if (!array_key_exists($datos['tipo'], CategoriaModelo::TIPOS)) {
-            $errores['tipo'] = 'Elegí qué va a mostrar el QR.';
-        }
-
         if (!$errores) {
             $descripcion = $datos['descripcion'] !== '' ? $datos['descripcion'] : null;
 
             try {
                 if ($categoria) {
-                    $modelo->actualizar($idCategoria, $datos['nombre'], $descripcion, $datos['tipo']);
+                    $modelo->actualizar($idCategoria, $datos['nombre'], $descripcion);
                     guardarAviso('ok', 'Se guardaron los cambios de "' . $datos['nombre'] . '".');
                 } else {
-                    $idCategoria = $modelo->crear($datos['nombre'], $descripcion, $datos['tipo']);
+                    $idCategoria = $modelo->crear($datos['nombre'], $descripcion);
                     guardarAviso('ok', 'Se creó la categoría "' . $datos['nombre'] . '". Ya podés imprimir su QR.');
                 }
 

@@ -1,6 +1,6 @@
 <?php
 // Menu lateral del panel del funcionario.
-// Antes de incluirlo, definir $seccionActiva ('inicio', 'documentos', 'categorias', 'encuestas', 'resultados', 'usuarios', 'mi_cuenta'),
+// Antes de incluirlo, definir $seccionActiva ('inicio', 'documentos', 'categorias', 'encuestas', 'resultados', 'traslados', 'flota', 'rutas', 'usuarios', 'mi_cuenta'),
 // $raiz (ruta hasta /Proyecto/) y $usuarioActual (lo devuelve requerirFuncionario()).
 
 $grupos = [
@@ -35,7 +35,32 @@ $grupos = [
             'icono' => '<path d="M4 20V10"></path><path d="M10 20V4"></path><path d="M16 20v-7"></path><path d="M22 20H2"></path>',
         ],
     ],
+    'AMBULANCIAS' => [
+        'traslados' => [
+            'texto' => 'Traslados',
+            'url'   => $raiz . 'Modulo_Ambulancias/Controlador/traslados.php',
+            'icono' => '<path d="M3 16V7h11v9"></path><path d="M14 10h4l3 3v3h-7"></path><circle cx="7" cy="17.5" r="2"></circle><circle cx="17" cy="17.5" r="2"></circle><path d="M8.5 9.5v3"></path><path d="M7 11h3"></path>',
+        ],
+        'flota' => [
+            'texto' => 'Flota',
+            'url'   => $raiz . 'Modulo_Ambulancias/Controlador/flota.php',
+            'icono' => '<rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M7 9h10"></path><path d="M7 13h10"></path><path d="M7 17h6"></path>',
+        ],
+        'rutas' => [
+            'texto' => 'Rutas',
+            'url'   => $raiz . 'Modulo_Ambulancias/Controlador/rutas.php',
+            'icono' => '<circle cx="6" cy="19" r="2"></circle><circle cx="18" cy="5" r="2"></circle><path d="M8 19h7a3.5 3.5 0 0 0 0-7H9a3.5 3.5 0 0 1 0-7h7"></path>',
+        ],
+    ],
 ];
+
+// Cada rol ve solo los modulos que puede usar
+if (!empty($usuarioActual) && !puedeUsarModulo($usuarioActual, 'documentacion')) {
+    unset($grupos[''], $grupos['DOCUMENTACIÓN'], $grupos['ENCUESTAS']);   // su inicio es Traslados
+}
+if (!empty($usuarioActual) && !puedeUsarModulo($usuarioActual, 'ambulancias')) {
+    unset($grupos['AMBULANCIAS']);
+}
 
 // La seccion de usuarios solo la ve el administrador
 if (!empty($usuarioActual) && esAdministrador($usuarioActual)) {
@@ -69,12 +94,6 @@ if (!empty($usuarioActual) && esAdministrador($usuarioActual)) {
       <?php endforeach; ?>
     <?php endforeach; ?>
 
-    <span class="sidebar-seccion">SERVICIOS</span>
-    <a class="sidebar-item" href="<?= e($raiz) ?>Modulo_Ambulancias/Vista/indexA.html">
-      <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 16V7h11v9"></path><path d="M14 10h4l3 3v3h-7"></path><circle cx="7" cy="17.5" r="2"></circle><circle cx="17" cy="17.5" r="2"></circle><path d="M8.5 9.5v3"></path><path d="M7 11h3"></path></svg>
-      Ambulancias
-      <span class="chip-pronto">Prototipo</span>
-    </a>
   </nav>
 
   <?php if (!empty($usuarioActual)): ?>
@@ -100,3 +119,6 @@ if (!empty($usuarioActual) && esAdministrador($usuarioActual)) {
     </div>
   <?php endif; ?>
 </aside>
+<!-- Validacion de formularios e idioma (se ejecutan cuando termina de cargar la pagina) -->
+<script src="<?= e($raiz) ?>Servicios_Comunes/Vista_General/assets/js/idioma_en.js" defer></script>
+<script src="<?= e($raiz) ?>Servicios_Comunes/Vista_General/assets/js/comun.js" defer></script>

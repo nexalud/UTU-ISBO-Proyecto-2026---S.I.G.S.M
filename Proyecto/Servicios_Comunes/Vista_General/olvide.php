@@ -59,5 +59,7 @@
     <?php endif; ?>
   </section>
 </div>
+<script src="../../Servicios_Comunes/Vista_General/assets/js/idioma_en.js"></script>
+<script src="../../Servicios_Comunes/Vista_General/assets/js/comun.js"></script>
 </body>
 </html>

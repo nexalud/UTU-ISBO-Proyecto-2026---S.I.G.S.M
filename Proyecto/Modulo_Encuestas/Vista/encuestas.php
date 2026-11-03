@@ -24,7 +24,7 @@ $seccionActiva = 'encuestas';
     <div class="encabezado">
       <div>
         <h1>Encuestas</h1>
-        <p>Creá encuestas, elegí en qué QR aparecen y cuándo están abiertas.</p>
+        <p>Cada encuesta aparece en el QR de un área, debajo de sus documentos.</p>
       </div>
       <a class="btn btn-primario" href="encuesta_form.php">
         <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
@@ -36,14 +36,14 @@ $seccionActiva = 'encuestas';
 
     <?php if (!$hayCategorias): ?>
       <div class="aviso error" role="alert">
-        No hay categorías de encuesta. <a href="../../Modulo_Documentacion/Controlador/categoria_form.php?tipo=encuesta">Creá una</a> para tener el QR.
+        Todavía no hay categorías. <a href="../../Modulo_Documentacion/Controlador/categoria_form.php">Creá una</a>: la encuesta aparece en el QR de esa área.
       </div>
     <?php endif; ?>
 
     <?php foreach ($categoriasRepetidas as $nombre): ?>
       <div class="aviso info" role="status">
         <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 7.5h.01"></path></svg>
-        “<?= e($nombre) ?>” tiene más de una encuesta abierta. El QR muestra la más nueva (marcada “En el QR”).
+        “<?= e($nombre) ?>” tiene más de una encuesta abierta. Al paciente le aparece la más nueva (marcada “En el QR”).
       </div>
     <?php endforeach; ?>
 

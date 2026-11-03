@@ -1,0 +1,2 @@
+PDF.js 4.10.38 (legacy build) de Mozilla - https://mozilla.github.io/pdf.js/
+Licencia Apache 2.0 (ver LICENSE). Archivos .mjs renombrados a .js para que cualquier servidor los entregue como JavaScript.

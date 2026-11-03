@@ -5,7 +5,7 @@ require_once __DIR__ . '/../../Servicios_Comunes/Seguridad/helpers.php';
 require_once __DIR__ . '/../Modelo/DocumentoModelo.php';
 
 require_once __DIR__ . '/../../Servicios_Comunes/Autenticacion/sesion.php';
-$usuarioActual = requerirFuncionario();
+$usuarioActual = requerirModulo('documentacion');
 
 $modelo = new DocumentoModelo();
 

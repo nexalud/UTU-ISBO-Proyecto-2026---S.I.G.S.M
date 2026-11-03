@@ -55,17 +55,17 @@ class GestionEncuestaModelo extends EncuestaModelo
         return $stmt->get_result()->fetch_assoc() ?: null;
     }
 
-    // Categorias de tipo encuesta (las que pueden tener una encuesta asociada)
+    // Areas (categorias) donde puede aparecer una encuesta: cualquiera, porque todas tienen QR
     public function listarCategorias(): array
     {
-        $sql = "SELECT id_categoria, nombre, codigo_qr FROM categoria WHERE tipo_categoria = 'encuesta' ORDER BY nombre";
+        $sql = "SELECT id_categoria, nombre, codigo_qr FROM categoria ORDER BY nombre";
 
         return $this->db->query($sql)->fetch_all(MYSQLI_ASSOC);
     }
 
     public function existeCategoria(int $idCategoria): bool
     {
-        $stmt = $this->db->prepare("SELECT 1 FROM categoria WHERE id_categoria = ? AND tipo_categoria = 'encuesta'");
+        $stmt = $this->db->prepare("SELECT 1 FROM categoria WHERE id_categoria = ?");
         $stmt->bind_param('i', $idCategoria);
         $stmt->execute();
 

@@ -24,9 +24,15 @@ $seccionActiva = 'inicio';
     <div class="encabezado">
       <div>
         <h1><?= e($saludo) ?>, <?= e($usuarioActual['nombre']) ?></h1>
-        <p>Así está hoy la documentación y las encuestas para pacientes.</p>
+        <p>Así están hoy la documentación, las encuestas<?= $verAmbulancias ? ' y los traslados' : '' ?>.</p>
       </div>
       <div class="botones-encabezado">
+        <?php if ($verAmbulancias): ?>
+          <a class="btn btn-secundario" href="../../Modulo_Ambulancias/Controlador/traslado_form.php">
+            <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+            Nuevo traslado
+          </a>
+        <?php endif; ?>
         <a class="btn btn-secundario" href="../../Modulo_Encuestas/Controlador/encuesta_form.php">
           <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
           Nueva encuesta
@@ -48,8 +54,8 @@ $seccionActiva = 'inicio';
       </a>
       <a class="indicador indicador-enlace" href="categorias.php">
         <span class="indicador-titulo">Categorías</span>
-        <span class="indicador-valor"><?= $resumen['categorias_docs'] + $resumen['categorias_encuesta'] ?></span>
-        <span class="indicador-detalle"><?= $resumen['categorias_docs'] ?> de documentos · <?= $resumen['categorias_encuesta'] ?> de encuesta</span>
+        <span class="indicador-valor"><?= $resumen['categorias'] ?></span>
+        <span class="indicador-detalle">un QR por cada área</span>
       </a>
       <a class="indicador indicador-enlace" href="../../Modulo_Encuestas/Controlador/encuestas.php">
         <span class="indicador-titulo">Encuestas abiertas</span>
@@ -65,6 +71,13 @@ $seccionActiva = 'inicio';
           <?php else: ?>igual que el mes pasado<?php endif; ?>
         </span>
       </a>
+      <?php if ($verAmbulancias): ?>
+        <a class="indicador indicador-enlace" href="../../Modulo_Ambulancias/Controlador/traslados.php">
+          <span class="indicador-titulo">Traslados en curso</span>
+          <span class="indicador-valor"><?= $resumen['traslados_en_curso'] ?></span>
+          <span class="indicador-detalle">ambulancias y vehículos en la calle</span>
+        </a>
+      <?php endif; ?>
       <div class="indicador">
         <span class="indicador-titulo">Calificación general</span>
         <?php if ($calificacion !== null): ?>
