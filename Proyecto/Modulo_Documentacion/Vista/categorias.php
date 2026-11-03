@@ -1,6 +1,6 @@
 <?php
-// Vista: listado de categorias y QR de la categoria elegida.
-// Variables: $categorias, $categoriaElegida, $cantidadPorTipo, $urlQrBase, $aviso, $token
+// Vista: listado de categorias (areas) y QR de la categoria elegida.
+// Variables: $categorias, $categoriaElegida, $urlQrBase, $aviso, $token
 
 $raiz = '../../';
 $seccionActiva = 'categorias';
@@ -24,7 +24,7 @@ $seccionActiva = 'categorias';
     <div class="encabezado">
       <div>
         <h1>Categorías</h1>
-        <p>Cada categoría tiene un QR fijo. Puede mostrar documentos o llevar a una encuesta.</p>
+        <p>Cada categoría es un área del hospital con <strong>un solo QR</strong>: muestra sus documentos y, si hay, su encuesta.</p>
       </div>
       <a class="btn btn-primario" href="categoria_form.php">
         <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
@@ -34,15 +34,12 @@ $seccionActiva = 'categorias';
 
     <?php require __DIR__ . '/../../Servicios_Comunes/Vista_General/aviso.php'; ?>
 
-    <div class="etiquetas">
-      <span class="etiqueta-info"><?= count($categorias) ?> categorías</span>
-      <span class="etiqueta-info"><?= (int) ($cantidadPorTipo['documental'] ?? 0) ?> de documentos</span>
-      <span class="etiqueta-info"><?= (int) ($cantidadPorTipo['encuesta'] ?? 0) ?> de encuesta</span>
-    </div>
-
     <div class="fila-columnas">
       <section class="tarjeta lista-docs">
-        <div class="lista-cabecera"><h2>Todas las categorías</h2></div>
+        <div class="lista-cabecera">
+          <h2>Todas las categorías</h2>
+          <span class="etiqueta-info"><?= count($categorias) ?> categorías</span>
+        </div>
 
         <?php if (!$categorias): ?>
           <p class="vacio">Todavía no hay categorías. Creá la primera con el botón de arriba.</p>
@@ -52,27 +49,22 @@ $seccionActiva = 'categorias';
               <thead>
                 <tr>
                   <th scope="col">Categoría</th>
-                  <th scope="col">Tipo</th>
-                  <th scope="col">Contenido</th>
+                  <th scope="col">Documentos</th>
+                  <th scope="col">Encuestas</th>
                   <th scope="col" class="col-acciones">Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 <?php foreach ($categorias as $c):
                   $id = (int) $c['id_categoria'];
-                  $esEncuesta = $c['tipo_categoria'] === 'encuesta';
                   $vacia = (int) $c['documentos'] === 0 && (int) $c['encuestas'] === 0;
                   $elegida = $categoriaElegida && (int) $categoriaElegida['id_categoria'] === $id;
                 ?>
                   <tr<?= $elegida ? ' class="fila-elegida"' : '' ?>>
                     <td>
                       <div class="doc-celda">
-                        <span class="icono-tipo <?= $esEncuesta ? 'encuesta' : 'documental' ?>" aria-hidden="true">
-                          <?php if ($esEncuesta): ?>
-                            <svg class="icono" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"></rect><path d="M9 8h6"></path><path d="M9 12h6"></path><path d="M9 16h3"></path></svg>
-                          <?php else: ?>
-                            <svg class="icono" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-                          <?php endif; ?>
+                        <span class="icono-tipo documental" aria-hidden="true">
+                          <svg class="icono" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
                         </span>
                         <div>
                           <strong><?= e($c['nombre']) ?></strong>
@@ -80,15 +72,11 @@ $seccionActiva = 'categorias';
                         </div>
                       </div>
                     </td>
-                    <td><span class="estado <?= $esEncuesta ? 'encuesta' : 'documental' ?>"><?= e(CategoriaModelo::TIPOS[$c['tipo_categoria']]) ?></span></td>
-                    <td>
-                      <?php if ($esEncuesta): ?>
-                        <?= (int) $c['encuestas'] ?> <?= (int) $c['encuestas'] === 1 ? 'encuesta' : 'encuestas' ?>
-                      <?php else: ?>
-                        <?= (int) $c['documentos'] ?> <?= (int) $c['documentos'] === 1 ? 'documento' : 'documentos' ?>
-                        <?php if ((int) $c['documentos']): ?><small class="gris">(<?= (int) $c['documentos_activos'] ?> activos)</small><?php endif; ?>
-                      <?php endif; ?>
+                    <td class="sin-corte">
+                      <?= (int) $c['documentos_activos'] ?> activos
+                      <?php if ((int) $c['documentos'] > (int) $c['documentos_activos']): ?><small class="gris">de <?= (int) $c['documentos'] ?></small><?php endif; ?>
                     </td>
+                    <td><?= (int) $c['encuestas'] ?: '–' ?></td>
                     <td class="col-acciones">
                       <div class="acciones-fila">
                         <a class="btn-icono" href="categorias.php?ver=<?= $id ?>" aria-label="Ver QR de <?= e($c['nombre']) ?>" title="Ver QR">
@@ -122,7 +110,6 @@ $seccionActiva = 'categorias';
         <h2>QR de la categoría</h2>
         <?php if ($categoriaElegida):
           $urlQr = $urlQrBase . urlencode($categoriaElegida['codigo_qr']);
-          $esEncuesta = $categoriaElegida['tipo_categoria'] === 'encuesta';
         ?>
           <div class="qr-contenido">
             <div class="qr-imagen" id="qr" data-url="<?= e($urlQr) ?>" role="img"
@@ -130,8 +117,8 @@ $seccionActiva = 'categorias';
             <div>
               <div class="qr-nombre"><?= e($categoriaElegida['nombre']) ?></div>
               <div class="qr-codigo">
-                <?= e($categoriaElegida['codigo_qr']) ?> ·
-                <?= $esEncuesta ? 'lleva a la encuesta abierta' : (int) $categoriaElegida['documentos_activos'] . ' documentos activos' ?>
+                <?= e($categoriaElegida['codigo_qr']) ?> · <?= (int) $categoriaElegida['documentos_activos'] ?> documentos
+                <?= (int) $categoriaElegida['encuestas'] ? '· con encuesta' : '' ?>
               </div>
             </div>
             <div class="qr-botones">
@@ -146,11 +133,7 @@ $seccionActiva = 'categorias';
               </button>
             </div>
             <a href="<?= e($urlQr) ?>" target="_blank" rel="noopener">Ver lo que ve el paciente</a>
-            <?php if ($esEncuesta): ?>
-              <a href="../../Modulo_Encuestas/Controlador/encuestas.php">Ir a las encuestas</a>
-            <?php else: ?>
-              <a href="documentos.php?cat=<?= (int) $categoriaElegida['id_categoria'] ?>">Ir a los documentos</a>
-            <?php endif; ?>
+            <a href="documentos.php?cat=<?= (int) $categoriaElegida['id_categoria'] ?>">Ir a los documentos</a>
           </div>
         <?php else: ?>
           <div class="qr-vacio">
@@ -168,9 +151,7 @@ $seccionActiva = 'categorias';
   <div class="qr-impresion" aria-hidden="true">
     <h1><?= e($categoriaElegida['nombre']) ?></h1>
     <div id="qr-impresion"></div>
-    <p><?= $categoriaElegida['tipo_categoria'] === 'encuesta'
-          ? 'Escaneá el código con la cámara del celular para responder la encuesta. Es anónima.'
-          : 'Escaneá el código con la cámara del celular para ver los documentos.' ?></p>
+    <p>Escaneá el código con la cámara del celular para ver la información de esta área.</p>
     <p>Hospital de Clínicas · S.I.G.S.M.</p>
   </div>
   <script src="../../Servicios_Comunes/Vista_General/assets/js/qrcode.js"></script>

@@ -76,5 +76,7 @@ $esBienvenida = $pedido && $pedido['tipo'] === 'bienvenida';
   </section>
 </div>
 <script src="../Vista_General/assets/js/panel.js"></script>
+<script src="../../Servicios_Comunes/Vista_General/assets/js/idioma_en.js"></script>
+<script src="../../Servicios_Comunes/Vista_General/assets/js/comun.js"></script>
 </body>
 </html>

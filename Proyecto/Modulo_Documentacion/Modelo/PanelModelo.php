@@ -23,8 +23,12 @@ class PanelModelo
         return [
             'documentos'          => $this->numero("SELECT COUNT(*) FROM documento"),
             'documentos_activos'  => $this->numero("SELECT COUNT(*) FROM documento WHERE activo = 1"),
-            'categorias_docs'     => $this->numero("SELECT COUNT(*) FROM categoria WHERE tipo_categoria = 'documental'"),
-            'categorias_encuesta' => $this->numero("SELECT COUNT(*) FROM categoria WHERE tipo_categoria = 'encuesta'"),
+            'categorias'          => $this->numero("SELECT COUNT(*) FROM categoria"),
+            // Traslados cuyo ultimo estado es En viaje, En destino o Regresando
+            'traslados_en_curso'  => $this->numero(
+                // Vista v_traslados_activos (ver sigsm.sql): 2, 3 y 4 = en viaje, en destino, regresando
+                "SELECT COUNT(*) FROM v_traslados_activos WHERE id_estado IN (2, 3, 4)"
+            ),
             'encuestas_abiertas'  => $this->numero("SELECT COUNT(*) FROM encuesta e WHERE $abiertas"),
             'encuestas'           => $this->numero("SELECT COUNT(*) FROM encuesta"),
             'respuestas_mes'      => $this->numero(

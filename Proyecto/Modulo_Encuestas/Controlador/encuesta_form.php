@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../Servicios_Comunes/Seguridad/helpers.php';
 require_once __DIR__ . '/../Modelo/GestionEncuestaModelo.php';
 
 require_once __DIR__ . '/../../Servicios_Comunes/Autenticacion/sesion.php';
-$usuarioActual = requerirFuncionario();
+$usuarioActual = requerirModulo('documentacion');
 
 const MAXIMO_PREGUNTAS = 20;
 const MAXIMO_OPCIONES  = 10;
@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errores['segmento'] = 'Escribí a quién está dirigida (entre 3 y 100 caracteres).';
         }
         if (!$modelo->existeCategoria($datos['categoria'])) {
-            $errores['categoria'] = 'Elegí la categoría (el QR) donde va a aparecer.';
+            $errores['categoria'] = 'Elegí el área donde va a aparecer.';
         }
         if (!fechaValida($datos['fecha_inicio'])) {
             $errores['fecha_inicio'] = 'Elegí desde qué día se puede responder.';

@@ -7,6 +7,13 @@ require_once __DIR__ . '/../Modelo/PanelModelo.php';
 require_once __DIR__ . '/../../Servicios_Comunes/Autenticacion/sesion.php';
 $usuarioActual = requerirFuncionario();
 
+// El administrativo de ambulancias no usa documentacion: su inicio es Traslados
+if (!puedeUsarModulo($usuarioActual, 'documentacion')) {
+    header('Location: ' . urlInicio($usuarioActual, '../../'), true, 303);
+    exit;
+}
+$verAmbulancias = puedeUsarModulo($usuarioActual, 'ambulancias');
+
 $modelo      = new PanelModelo();
 $resumen     = $modelo->resumen();
 $calificacion = $modelo->calificacionGeneral();

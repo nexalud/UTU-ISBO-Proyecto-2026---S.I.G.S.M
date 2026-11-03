@@ -5,7 +5,7 @@ require_once __DIR__ . '/../../Servicios_Comunes/Seguridad/helpers.php';
 require_once __DIR__ . '/../Modelo/ResultadosModelo.php';
 
 require_once __DIR__ . '/../../Servicios_Comunes/Autenticacion/sesion.php';
-$usuarioActual = requerirFuncionario();
+$usuarioActual = requerirModulo('documentacion');
 
 $modelo    = new ResultadosModelo();
 $encuestas = $modelo->listarEncuestas();
@@ -120,7 +120,7 @@ if ($encuesta) {
     }
 }
 
-// Todos los QR apuntan a la misma pagina; si la categoria es de encuesta, redirige a la encuesta
+// El QR es el del area: la encuesta aparece en esa pagina, debajo de los documentos
 $raizProyecto = dirname(dirname(dirname($_SERVER['SCRIPT_NAME'])));
 $urlQr = ($encuesta && $encuesta['codigo_qr'])
     ? urlServidor() . rtrim($raizProyecto, '/') . '/Modulo_Documentacion/Controlador/paciente.php?qr=' . urlencode($encuesta['codigo_qr'])

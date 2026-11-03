@@ -119,8 +119,8 @@ function editorPregunta($i, array $p, ?string $error): void
 
     <?php if (!$categorias): ?>
       <div class="aviso error" role="alert">
-        Primero tenés que crear una categoría de tipo encuesta (es la que da el QR).
-        <a href="../../Modulo_Documentacion/Controlador/categoria_form.php?tipo=encuesta">Crear categoría</a>
+        Primero tenés que crear una categoría (el área con su QR) donde va a aparecer la encuesta.
+        <a href="../../Modulo_Documentacion/Controlador/categoria_form.php">Crear categoría</a>
       </div>
     <?php endif; ?>
 
@@ -152,7 +152,7 @@ function editorPregunta($i, array $p, ?string $error): void
 
           <div class="campos-fila">
             <div class="<?= claseCampo($errores, 'categoria') ?>">
-              <label for="categoria">Categoría (QR) <span class="obligatorio" aria-hidden="true">*</span></label>
+              <label for="categoria">¿En qué área aparece? <span class="obligatorio" aria-hidden="true">*</span></label>
               <select id="categoria" name="categoria">
                 <option value="">Elegí una categoría</option>
                 <?php foreach ($categorias as $c): ?>
@@ -161,6 +161,7 @@ function editorPregunta($i, array $p, ?string $error): void
                   </option>
                 <?php endforeach; ?>
               </select>
+              <span class="ayuda">Le aparece al paciente al final de los documentos de esa área.</span>
               <?= errorCampo($errores, 'categoria') ?>
             </div>
 
@@ -200,7 +201,7 @@ function editorPregunta($i, array $p, ?string $error): void
 
         <aside class="tarjeta tarjeta-ayuda">
           <h2>Cómo funciona</h2>
-          <p>El paciente escanea el QR de la categoría y responde la encuesta que esté <strong>abierta</strong> ese día. Si hay dos abiertas en la misma categoría, se muestra la más nueva.</p>
+          <p>El paciente escanea <strong>un solo QR</strong>, el del área. Ve los documentos y, abajo, una tarjeta para responder la encuesta que esté <strong>abierta</strong> ese día. Si hay dos abiertas en la misma área, se muestra la más nueva.</p>
           <p>Las respuestas son <strong>anónimas</strong>: no se guarda ningún dato del paciente.</p>
           <p>La primera pregunta de escala se usa para la <strong>calificación promedio</strong> en Resultados.</p>
         </aside>

@@ -1,6 +1,9 @@
 <?php
 // Funciones comunes para las pantallas del sistema.
 
+// Todas las fechas y horas del sistema, en hora de Uruguay
+date_default_timezone_set('America/Montevideo');
+
 if (session_status() === PHP_SESSION_NONE) {
     // Cookie de sesion: no accesible desde JavaScript y no se manda desde otros sitios
     session_set_cookie_params([

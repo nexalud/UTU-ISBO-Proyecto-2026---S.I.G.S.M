@@ -4,11 +4,10 @@ $raiz = '../../';
 $seccionActiva = 'usuarios';
 $titulo = $usuario ? 'Editar usuario' : 'Nuevo usuario';
 
-// Los roles del modulo 1 primero y despues los de ambulancias
-$rolesModulo1 = ['administrador', 'funcionario', 'usuario_basico'];
+// Primero los roles que entran al sistema y despues el personal que solo se asigna a traslados
 $gruposRoles = [
-    'Documentación y encuestas' => array_filter($roles, fn($r) => in_array($r['nombre_rol'], $rolesModulo1, true)),
-    'Ambulancias (módulo 2)'    => array_filter($roles, fn($r) => !in_array($r['nombre_rol'], $rolesModulo1, true)),
+    'Entran al sistema'                          => array_filter($roles, fn($r) => in_array($r['nombre_rol'], ROLES_PANEL, true)),
+    'Personal de traslados (no entran al sistema)' => array_filter($roles, fn($r) => !in_array($r['nombre_rol'], ROLES_PANEL, true)),
 ];
 ?>
 <!DOCTYPE html>
@@ -111,7 +110,7 @@ $gruposRoles = [
           <p>Al crear el usuario le llega un correo con un enlace para que <strong>elija su propia contraseña</strong>. El enlace vence en 48 horas.</p>
           <p>Si no le llega o se vence, desde la lista de usuarios podés mandarle uno nuevo.</p>
         <?php endif; ?>
-        <p>Al panel entran los roles <strong>Administrador</strong> y <strong>Funcionario</strong>. Solo el administrador ve esta sección.</p>
+        <p>Cada rol ve solo su módulo: el <strong>administrativo de documentación</strong> los documentos y encuestas, y el <strong>de ambulancias</strong> los traslados. El <strong>administrador</strong> ve todo, incluida esta sección. Choferes y enfermeros no entran: solo se asignan a los traslados.</p>
       </aside>
     </div>
   </main>

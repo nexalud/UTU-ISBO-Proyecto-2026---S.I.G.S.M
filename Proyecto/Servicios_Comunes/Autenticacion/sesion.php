@@ -5,8 +5,14 @@
 require_once __DIR__ . '/../Seguridad/helpers.php';
 require_once __DIR__ . '/UsuarioModelo.php';
 
-// Roles que pueden entrar al panel del Modulo de Documentacion
-const ROLES_PANEL = ['administrador', 'funcionario'];
+// Roles que pueden entrar al panel (choferes y enfermeros no entran: solo se asignan a los traslados)
+const ROLES_PANEL = ['administrador', 'funcionario', 'operador_ue'];
+
+// Que roles pueden usar cada modulo. El administrador entra a todo.
+const ROLES_MODULO = [
+    'documentacion' => ['administrador', 'funcionario'],   // documentos, categorias y encuestas
+    'ambulancias'   => ['administrador', 'operador_ue'],   // traslados, flota y rutas
+];
 
 // Si no hay actividad en 30 minutos, la sesion se cierra sola
 const MINUTOS_INACTIVIDAD = 30;
@@ -86,6 +92,34 @@ function esAdministrador(array $usuario): bool
     return in_array('administrador', $usuario['roles'], true);
 }
 
+function puedeUsarModulo(array $usuario, string $modulo): bool
+{
+    return (bool) array_intersect($usuario['roles'], ROLES_MODULO[$modulo]);
+}
+
+// Pagina de inicio segun el rol: el de ambulancias arranca en Traslados
+function urlInicio(array $usuario, string $raiz): string
+{
+    return puedeUsarModulo($usuario, 'documentacion')
+        ? $raiz . 'Modulo_Documentacion/Controlador/inicio.php'
+        : $raiz . 'Modulo_Ambulancias/Controlador/traslados.php';
+}
+
+// Como requerirFuncionario(), pero ademas tiene que tener permiso para ese modulo
+function requerirModulo(string $modulo): array
+{
+    $usuario = requerirFuncionario();
+
+    if (!puedeUsarModulo($usuario, $modulo)) {
+        guardarAviso('error', 'No tenés permiso para entrar a esa sección.');
+        $raiz = rtrim(dirname(dirname(dirname($_SERVER['SCRIPT_NAME']))), '/') . '/';
+        header('Location: ' . urlInicio($usuario, $raiz), true, 303);
+        exit;
+    }
+
+    return $usuario;
+}
+
 // Como requerirFuncionario(), pero ademas tiene que ser administrador (si no, vuelve al inicio)
 function requerirAdministrador(): array
 {
@@ -93,8 +127,8 @@ function requerirAdministrador(): array
 
     if (!esAdministrador($usuario)) {
         guardarAviso('error', 'Esa sección es solo para administradores.');
-        $raiz = dirname(dirname(dirname($_SERVER['SCRIPT_NAME'])));
-        header('Location: ' . rtrim($raiz, '/') . '/Modulo_Documentacion/Controlador/inicio.php', true, 303);
+        $raiz = rtrim(dirname(dirname(dirname($_SERVER['SCRIPT_NAME']))), '/') . '/';
+        header('Location: ' . urlInicio($usuario, $raiz), true, 303);
         exit;
     }
 
@@ -123,19 +157,25 @@ function errorContrasenaNueva(string $contrasena, string $repetida, string $nomb
     return null;
 }
 
-// Nombre lindo de un rol de la base: usuario_basico -> Usuario básico
+// Nombre para mostrar de cada rol de la base
 function nombreRol(string $rol): string
 {
-    $nombres = ['usuario_basico' => 'Usuario básico', 'medico' => 'Médico', 'operador_ue' => 'Operador UE'];
+    $nombres = [
+        'administrador' => 'Administrador',
+        'funcionario'   => 'Administrativo de documentación',
+        'operador_ue'   => 'Administrativo de ambulancias',
+        'enfermero'     => 'Enfermero',
+        'chofer'        => 'Chofer',
+    ];
     return $nombres[$rol] ?? ucfirst(str_replace('_', ' ', $rol));
 }
 
-// Texto para mostrar el rol en el menu: "Administrador", "Funcionario"
+// Texto para mostrar el rol en el menu (el de mas permisos)
 function rolPrincipal(array $usuario): string
 {
     foreach (ROLES_PANEL as $rol) {
         if (in_array($rol, $usuario['roles'], true)) {
-            return ucfirst($rol);
+            return nombreRol($rol);
         }
     }
     return '';

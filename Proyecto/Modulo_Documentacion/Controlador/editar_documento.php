@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../Servicios_Comunes/Seguridad/helpers.php';
 require_once __DIR__ . '/../Modelo/DocumentoModelo.php';
 
 require_once __DIR__ . '/../../Servicios_Comunes/Autenticacion/sesion.php';
-$usuarioActual = requerirFuncionario();
+$usuarioActual = requerirModulo('documentacion');
 
 $modelo    = new DocumentoModelo();
 $documento = $modelo->obtener((int) ($_GET['id'] ?? 0));
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (mb_strlen($datos['descripcion']) > 255) {
             $errores['descripcion'] = 'La descripción puede tener hasta 255 caracteres.';
         }
-        if (!$modelo->existeCategoriaDocumental($datos['categoria'])) {
+        if (!$modelo->existeCategoria($datos['categoria'])) {
             $errores['categoria'] = 'Elegí una categoría.';
         }
 

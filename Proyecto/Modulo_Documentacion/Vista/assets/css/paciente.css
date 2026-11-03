@@ -199,3 +199,105 @@ body {
 @media (min-width: 481px) {
   body { max-width: 480px; margin: 0 auto; box-shadow: 0 0 0 1px var(--borde); }
 }
+
+/* Tarjeta de la encuesta del area (al final de los documentos) */
+.encuesta-tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-color: #c7dcef;
+  background: linear-gradient(180deg, #eef5fc 0%, #ffffff 70%);
+}
+
+.encuesta-tarjeta h2 { margin: 0; font-size: 19px; font-weight: 800; }
+.encuesta-tarjeta p { margin: 0; color: var(--texto-2); }
+
+.encuesta-icono {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #fdf3dc;
+  color: #c98a00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.encuesta-tarjeta.respondida { background: #f3faf6; border-color: #cbe8d8; }
+.encuesta-tarjeta.respondida .encuesta-icono { background: #e3f4ec; color: #16683f; }
+
+.btn-encuesta {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  border-radius: 12px;
+  background: var(--azul);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.btn-encuesta:hover { background: var(--azul-oscuro); }
+.btn-encuesta:focus-visible { outline: 3px solid var(--azul-oscuro); outline-offset: 3px; }
+
+/* ---------- Lector de PDF ---------- */
+.barra-visor {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--azul);
+  color: #fff;
+}
+
+.barra-visor-texto { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.barra-visor-texto span { font-size: 12px; color: #bcd6ee; }
+.barra-visor-texto strong { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.btn-atras {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  color: #fff;
+}
+
+.btn-atras:hover { background: rgba(255, 255, 255, 0.12); }
+.barra-visor .btn-descargar { border-color: rgba(255, 255, 255, 0.45); color: #fff; }
+
+.visor { padding: 14px 12px 0; display: flex; flex-direction: column; gap: 14px; }
+
+.paginas { display: flex; flex-direction: column; gap: 10px; }
+
+.pagina-pdf {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(26, 42, 58, 0.15);
+}
+
+.visor-estado { margin: 40px 0; text-align: center; color: var(--texto-3); }
+
+/* La tarjeta del final entra suave cuando el paciente llega */
+.final-documento { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.final-documento.visible { opacity: 1; transform: none; }
+
+.final-etiqueta { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; color: var(--azul); }
+
+.volver-lista { text-align: center; font-size: 15px; font-weight: 700; color: var(--azul); padding: 6px 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .final-documento { transition: none; opacity: 1; transform: none; }
+}

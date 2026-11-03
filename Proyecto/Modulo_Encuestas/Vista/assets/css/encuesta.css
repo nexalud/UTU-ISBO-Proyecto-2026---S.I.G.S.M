@@ -461,3 +461,35 @@ textarea:focus {
     box-shadow: 0 0 0 1px var(--borde);
   }
 }
+
+/* Volver a la pagina del area (documentos) */
+.volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  color: #e3eef8;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.volver .icono { width: 18px; height: 18px; }
+.volver:hover { color: #fff; }
+
+.btn-volver {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  width: 100%;
+  max-width: 320px;
+  border-radius: 12px;
+  background: var(--azul);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.btn-volver:hover { background: var(--azul-oscuro); }

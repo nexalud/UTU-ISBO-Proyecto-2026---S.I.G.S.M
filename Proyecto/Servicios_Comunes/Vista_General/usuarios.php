@@ -110,7 +110,7 @@ $seccionActiva = 'usuarios';
           </tbody>
         </table>
       </div>
-      <p class="nota">Los usuarios no se borran: se desactivan, así queda registro de los documentos que cargaron. Al panel entran los roles Administrador y Funcionario.</p>
+      <p class="nota">Los usuarios no se borran: se desactivan, así queda registro de los documentos que cargaron. Al panel entran el administrador y los administrativos de documentación y de ambulancias.</p>
     </section>
   </main>
 </div>

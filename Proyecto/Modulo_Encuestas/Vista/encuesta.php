@@ -1,6 +1,6 @@
 <?php
 // Vista de la encuesta del paciente. La carga el controlador con:
-// $estado, $encuesta, $preguntas, $errores, $valores, $errorGeneral, $token, $codigoQr, $LARGO_MAXIMO
+// $estado, $encuesta, $preguntas, $errores, $valores, $errorGeneral, $token, $codigoQr, $idDocumento, $urlVolver, $LARGO_MAXIMO
 
 $total   = count($preguntas);
 $tituloPagina = $estado === 'form' ? $encuesta['titulo'] : ($estado === 'gracias' ? 'Gracias por responder' : 'Encuesta no disponible');
@@ -34,6 +34,10 @@ function textoEscala(string $texto): string
         <span class="marca-sub">Dr. Manuel Quintela</span>
       </div>
     </div>
+    <a class="volver" href="<?= e($urlVolver) ?>">
+      <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5"></path><path d="M11 6l-6 6 6 6"></path></svg>
+      <?= $idDocumento ? 'Volver al documento' : 'Volver a la información' ?>
+    </a>
     <h1><?= e($encuesta['titulo']) ?></h1>
     <p class="cabecera-desc"><?= e($encuesta['descripcion'] ?: 'Tu opinión nos ayuda a mejorar la atención.') ?></p>
   </header>
@@ -50,7 +54,7 @@ function textoEscala(string $texto): string
       </p>
     </div>
 
-    <form method="post" action="encuesta.php?qr=<?= e(urlencode($codigoQr)) ?>" id="form-encuesta" novalidate>
+    <form method="post" action="encuesta.php?qr=<?= e(urlencode($codigoQr)) ?><?= $idDocumento ? '&amp;doc=' . $idDocumento : '' ?>" id="form-encuesta" novalidate>
       <input type="hidden" name="token" value="<?= e($token) ?>">
 
       <?php foreach ($preguntas as $i => $p):
@@ -150,7 +154,7 @@ function textoEscala(string $texto): string
         </div>
         <h1>¡Gracias por tu respuesta!</h1>
         <p>Tu opinión quedó registrada de forma anónima y nos ayuda a mejorar la atención del hospital.</p>
-        <p class="suave">Ya podés cerrar esta página.</p>
+        <a class="btn-volver" href="<?= e($urlVolver) ?>"><?= $idDocumento ? 'Volver al documento' : 'Volver a la información del área' ?></a>
       <?php else: ?>
         <div class="mensaje-icono mal">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><path d="M14 14l7 7"></path><path d="M21 14l-7 7"></path></svg>
@@ -168,5 +172,7 @@ function textoEscala(string $texto): string
 <?php if ($estado === 'form'): ?>
   <script src="../Vista/assets/js/encuesta.js"></script>
 <?php endif; ?>
+<script src="../../Servicios_Comunes/Vista_General/assets/js/idioma_en.js"></script>
+<script src="../../Servicios_Comunes/Vista_General/assets/js/comun.js"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 // Vista: formulario de categoria (nueva o editar).
-// Variables: $categoria (null si es nueva), $datos, $errores, $tipoBloqueado, $token
+// Variables: $categoria (null si es nueva), $datos, $errores, $token
 
 $raiz = '../../';
 $seccionActiva = 'categorias';
@@ -45,7 +45,7 @@ $titulo = $categoria ? 'Editar categoría' : 'Nueva categoría';
           <label for="nombre">Nombre <span class="obligatorio" aria-hidden="true">*</span></label>
           <input id="nombre" name="nombre" type="text" maxlength="100" required value="<?= e($datos['nombre']) ?>"
                  placeholder="Ej: Nefrología y trasplante" <?= isset($errores['nombre']) ? 'aria-describedby="error-nombre"' : '' ?>>
-          <span class="ayuda">Es el título que ve el paciente arriba de la lista.</span>
+          <span class="ayuda">Es el área que ve el paciente arriba de la lista, por ejemplo un servicio del hospital.</span>
           <?= errorCampo($errores, 'nombre') ?>
         </div>
 
@@ -58,33 +58,6 @@ $titulo = $categoria ? 'Editar categoría' : 'Nueva categoría';
                     placeholder="Ej: Indicaciones para pacientes del centro de nefrología"><?= e($datos['descripcion']) ?></textarea>
           <?= errorCampo($errores, 'descripcion') ?>
         </div>
-
-        <fieldset class="<?= claseCampo($errores, 'tipo') ?> grupo-opciones">
-          <legend class="etiqueta">¿Qué muestra el QR? <span class="obligatorio" aria-hidden="true">*</span></legend>
-          <?php if ($tipoBloqueado): ?>
-            <input type="hidden" name="tipo" value="<?= e($datos['tipo']) ?>">
-          <?php endif; ?>
-          <div class="opciones-tarjeta">
-            <label class="opcion-tarjeta">
-              <input type="radio" name="tipo" value="documental" <?= $datos['tipo'] === 'documental' ? 'checked' : '' ?> <?= $tipoBloqueado ? 'disabled' : '' ?>>
-              <span>
-                <strong>Documentos</strong>
-                <small>El paciente ve la lista de PDF de esta categoría.</small>
-              </span>
-            </label>
-            <label class="opcion-tarjeta">
-              <input type="radio" name="tipo" value="encuesta" <?= $datos['tipo'] === 'encuesta' ? 'checked' : '' ?> <?= $tipoBloqueado ? 'disabled' : '' ?>>
-              <span>
-                <strong>Encuesta</strong>
-                <small>El paciente va directo a la encuesta abierta de esta categoría.</small>
-              </span>
-            </label>
-          </div>
-          <?php if ($tipoBloqueado): ?>
-            <span class="ayuda">No se puede cambiar porque la categoría ya tiene <?= $datos['tipo'] === 'encuesta' ? 'encuestas' : 'documentos' ?>.</span>
-          <?php endif; ?>
-          <?= errorCampo($errores, 'tipo') ?>
-        </fieldset>
 
         <div class="botones-form">
           <a class="btn btn-secundario" href="categorias.php">Cancelar</a>
@@ -100,9 +73,9 @@ $titulo = $categoria ? 'Editar categoría' : 'Nueva categoría';
         <?php if ($categoria): ?>
           <p>El código de esta categoría es <strong><?= e($categoria['codigo_qr']) ?></strong> y no cambia aunque edites el nombre. Los QR que ya imprimiste siguen funcionando.</p>
         <?php else: ?>
-          <p>Al crearla, el sistema le asigna un código fijo (por ejemplo <strong>QR-CAT-0006</strong>) y ya podés imprimir o descargar su QR.</p>
+          <p>Al crearla, el sistema le asigna un código fijo (por ejemplo <strong>QR-CAT-0007</strong>) y ya podés imprimir o descargar su QR.</p>
         <?php endif; ?>
-        <p>Una categoría de documentos agrupa PDF informativos. Una de encuesta lleva a la encuesta que esté abierta en ese momento.</p>
+        <p>El paciente escanea un solo QR y ve los documentos del área. Si el área tiene una encuesta abierta, le aparece al final de la lista para responderla ahí mismo.</p>
       </aside>
     </div>
   </main>

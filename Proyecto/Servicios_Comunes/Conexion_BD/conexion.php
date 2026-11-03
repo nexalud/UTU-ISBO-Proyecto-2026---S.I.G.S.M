@@ -15,6 +15,8 @@ function conectarBD(): mysqli
     try {
         $conexion = new mysqli($host, $usuario, $password, $base);
         $conexion->set_charset('utf8mb4');
+        // Misma hora que PHP (Uruguay), aunque el servidor de base este en otra zona (ej: el contenedor en UTC)
+        $conexion->query("SET time_zone = '-03:00'");
         return $conexion;
     } catch (mysqli_sql_exception $e) {
         // El detalle queda en el log del servidor, nunca se le muestra al usuario

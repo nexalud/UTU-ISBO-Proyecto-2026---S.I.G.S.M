@@ -58,17 +58,13 @@ class DocumentoModelo
         $this->db = conectarBD();
     }
 
-    // Categorias de tipo documental con la cantidad de documentos de cada una
+    // Todas las categorias con la cantidad de documentos de cada una
     public function listarCategorias(): array
     {
-        $sql = "SELECT c.id_categoria, c.nombre, c.codigo_qr,
-                       COUNT(d.id_documento) AS total,
-                       COALESCE(SUM(d.activo = 1), 0) AS activos
-                FROM categoria c
-                LEFT JOIN documento d ON d.id_categoria = c.id_categoria
-                WHERE c.tipo_categoria = 'documental'
-                GROUP BY c.id_categoria, c.nombre, c.codigo_qr
-                ORDER BY c.nombre";
+        // Vista v_documentos_por_categoria (ver sigsm.sql)
+        $sql = "SELECT id_categoria, nombre, codigo_qr, total, activos
+                FROM v_documentos_por_categoria
+                ORDER BY nombre";
 
         return $this->db->query($sql)->fetch_all(MYSQLI_ASSOC);
     }
@@ -80,8 +76,7 @@ class DocumentoModelo
                        c.nombre AS categoria
                 FROM documento d
                 INNER JOIN categoria c ON c.id_categoria = d.id_categoria
-                WHERE c.tipo_categoria = 'documental'
-                  AND (? = 0 OR d.id_categoria = ?)
+                WHERE (? = 0 OR d.id_categoria = ?)
                   AND d.titulo LIKE ?
                 ORDER BY d.fecha_carga DESC, d.id_documento DESC";
 
@@ -93,9 +88,9 @@ class DocumentoModelo
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function existeCategoriaDocumental(int $idCategoria): bool
+    public function existeCategoria(int $idCategoria): bool
     {
-        $stmt = $this->db->prepare("SELECT 1 FROM categoria WHERE id_categoria = ? AND tipo_categoria = 'documental'");
+        $stmt = $this->db->prepare("SELECT 1 FROM categoria WHERE id_categoria = ?");
         $stmt->bind_param('i', $idCategoria);
         $stmt->execute();
 
@@ -181,9 +176,24 @@ class DocumentoModelo
         return $stmt->get_result()->fetch_assoc() ?: null;
     }
 
+    // Documento activo con los datos de su area, para el lector del paciente
+    public function obtenerParaVisor(int $idDocumento): ?array
+    {
+        $sql = "SELECT d.id_documento, d.titulo, d.descripcion, c.nombre AS categoria, c.codigo_qr
+                FROM documento d
+                INNER JOIN categoria c ON c.id_categoria = d.id_categoria
+                WHERE d.id_documento = ? AND d.activo = 1";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param('i', $idDocumento);
+        $stmt->execute();
+
+        return $stmt->get_result()->fetch_assoc() ?: null;
+    }
+
     public function buscarCategoriaPorQr(string $codigoQr): ?array
     {
-        $stmt = $this->db->prepare("SELECT id_categoria, nombre, descripcion, tipo_categoria FROM categoria WHERE codigo_qr = ?");
+        $stmt = $this->db->prepare("SELECT id_categoria, nombre, descripcion, codigo_qr FROM categoria WHERE codigo_qr = ?");
         $stmt->bind_param('s', $codigoQr);
         $stmt->execute();
 

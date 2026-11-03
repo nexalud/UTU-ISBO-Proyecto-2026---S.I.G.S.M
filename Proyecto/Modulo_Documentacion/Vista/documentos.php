@@ -25,7 +25,7 @@ $tituloLista = $categoriaElegida ? $categoriaElegida['nombre'] : 'Todos los docu
     <div class="encabezado">
       <div>
         <h1>Documentos y QR</h1>
-        <p>Cada categoría tiene un QR. El paciente lo escanea y ve los documentos activos de esa categoría.</p>
+        <p>Cada categoría tiene un QR. El paciente lo escanea y ve los documentos activos y, si hay, la encuesta del área.</p>
       </div>
       <a class="btn btn-primario" href="nuevo_documento.php<?= $idCategoria ? '?cat=' . $idCategoria : '' ?>">
         <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
@@ -164,7 +164,7 @@ $tituloLista = $categoriaElegida ? $categoriaElegida['nombre'] : 'Todos los docu
   <div class="qr-impresion" aria-hidden="true">
     <h1><?= e($categoriaElegida['nombre']) ?></h1>
     <div id="qr-impresion"></div>
-    <p>Escaneá el código con la cámara del celular para ver los documentos.</p>
+    <p>Escaneá el código con la cámara del celular para ver la información de esta área.</p>
     <p>Hospital de Clínicas · S.I.G.S.M.</p>
   </div>
   <script src="../../Servicios_Comunes/Vista_General/assets/js/qrcode.js"></script>

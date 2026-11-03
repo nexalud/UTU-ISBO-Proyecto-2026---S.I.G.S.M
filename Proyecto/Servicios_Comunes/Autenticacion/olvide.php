@@ -11,7 +11,7 @@ const PEDIDOS_POR_USUARIO_HORA = 3;
 
 $actual = usuarioActual();
 if ($actual && puedeEntrarAlPanel($actual)) {
-    header('Location: ../../Modulo_Documentacion/Controlador/inicio.php');
+    header('Location: ' . urlInicio($actual, '../../'));
     exit;
 }
 

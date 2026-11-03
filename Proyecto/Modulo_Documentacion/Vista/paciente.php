@@ -1,6 +1,6 @@
 <?php
-// Vista publica (celular): documentos de una categoria.
-// Variables: $categoria, $documentos
+// Vista publica (celular): documentos de una categoria y, si hay, la tarjeta de su encuesta.
+// Variables: $categoria, $documentos, $encuesta, $yaRespondio, $codigoQr
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -25,15 +25,15 @@
         <span class="marca-sub">Dr. Manuel Quintela</span>
       </div>
     </div>
-    <span class="cabecera-etiqueta">DOCUMENTOS PARA PACIENTES</span>
+    <span class="cabecera-etiqueta">INFORMACIÓN PARA PACIENTES</span>
     <h1><?= e($categoria['nombre']) ?></h1>
-    <p class="cabecera-desc">Podés leerlos acá o guardarlos en tu celular.</p>
+    <p class="cabecera-desc">Tocá un documento para leerlo o descargalo a tu celular.</p>
   </header>
 
   <main class="contenido">
     <?php if (!$documentos): ?>
       <div class="tarjeta vacio">
-        <p>Todavía no hay documentos disponibles en esta categoría.</p>
+        <p>Todavía no hay documentos disponibles en esta área.</p>
       </div>
     <?php endif; ?>
 
@@ -48,7 +48,7 @@
           </div>
         </div>
         <div class="documento-botones">
-          <a class="btn-ver" href="archivo.php?id=<?= $id ?>" target="_blank" rel="noopener">
+          <a class="btn-ver" href="visor.php?id=<?= $id ?>">
             <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg>
             Ver
           </a>
@@ -58,6 +58,30 @@
         </div>
       </article>
     <?php endforeach; ?>
+
+    <?php if ($encuesta): ?>
+      <!-- Encuesta del area: el paciente la responde sin escanear otro QR -->
+      <section class="tarjeta encuesta-tarjeta<?= $yaRespondio ? ' respondida' : '' ?>" aria-labelledby="titulo-encuesta">
+        <div class="encuesta-icono" aria-hidden="true">
+          <?php if ($yaRespondio): ?>
+            <svg class="icono" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"></path></svg>
+          <?php else: ?>
+            <svg class="icono" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"></path></svg>
+          <?php endif; ?>
+        </div>
+        <?php if ($yaRespondio): ?>
+          <h2 id="titulo-encuesta">¡Gracias por tu opinión!</h2>
+          <p>Ya respondiste la encuesta de esta área.</p>
+        <?php else: ?>
+          <h2 id="titulo-encuesta">¿Nos ayudás a mejorar?</h2>
+          <p>Contanos cómo te atendieron. Es <strong>anónima</strong> y lleva menos de un minuto.</p>
+          <a class="btn-encuesta" href="../../Modulo_Encuestas/Controlador/encuesta.php?qr=<?= e(urlencode($codigoQr)) ?>">
+            Responder encuesta
+            <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
+          </a>
+        <?php endif; ?>
+      </section>
+    <?php endif; ?>
 
     <div class="tarjeta info">
       <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5"></path><path d="M12 7.5h.01"></path></svg>
@@ -84,5 +108,7 @@
 <?php endif; ?>
 
   <footer class="pie">S.I.G.S.M. · Desarrollado por Nexalud</footer>
+<script src="../../Servicios_Comunes/Vista_General/assets/js/idioma_en.js"></script>
+<script src="../../Servicios_Comunes/Vista_General/assets/js/comun.js"></script>
 </body>
 </html>
