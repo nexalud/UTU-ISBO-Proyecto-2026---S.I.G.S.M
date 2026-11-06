@@ -104,7 +104,11 @@ Para enviarlos de verdad, copiá `Correo/config_correo.ejemplo.php` como `config
 
 ## ☁ Instalación en servidor · AlmaLinux + Docker
 
-> Ejemplo probado en **AlmaLinux 10** con un usuario con `sudo`. Reemplazá `192.168.1.19` por la IP de tu servidor.
+> Probado en **AlmaLinux 10** en VirtualBox con un usuario con `sudo`.
+> Red de la VM: **Adaptador 1 NAT** (internet) y **Adaptador 2 solo-anfitrión** con IP fija, por ejemplo `192.168.56.101`.
+
+Todo lo de Docker está en la carpeta [`docker/`](docker): `Dockerfile`, `docker-compose.yml`, `.env.example` y `setup_replicacion.sh`.
+Levanta **3 contenedores**: `sigsm_app` (PHP 8.5 + Apache), `sigsm_db` (MariaDB, master) y `sigsm_db_slave` (réplica).
 
 **1 · Instalar Docker y Git**
 
@@ -115,140 +119,62 @@ sudo dnf -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 sudo systemctl enable --now docker
 ```
 
-**2 · Clonar el proyecto**
+**2 · Clonar el proyecto** (antes de levantar nada: el compose usa los `.sql` del repo)
 
 ```bash
 sudo mkdir -p /opt/sigsm && cd /opt/sigsm
 sudo git clone https://github.com/nexalud/UTU-ISBO-Proyecto-2026---S.I.G.S.M.git app
 ```
 
-**3 · Crear los archivos de Docker** en `/opt/sigsm`
-
-<details>
-<summary><code>Dockerfile</code></summary>
-
-```dockerfile
-FROM php:8.5-apache
-RUN docker-php-ext-install mysqli pdo_mysql \
- && { echo 'upload_max_filesize=10M'; echo 'post_max_size=12M'; } > /usr/local/etc/php/conf.d/sigsm.ini
-```
-
-</details>
-
-<details>
-<summary><code>docker-compose.yml</code></summary>
-
-```yaml
-services:
-  app:
-    build: .
-    container_name: sigsm_app
-    restart: unless-stopped
-    ports:
-      - "8080:80"
-    environment:
-      DB_HOST: db
-      DB_NAME: ${DB_NAME}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      APP_URL: ${APP_URL}
-      SMTP_HOST: ${SMTP_HOST}
-      SMTP_PORT: ${SMTP_PORT}
-      SMTP_SEGURIDAD: ${SMTP_SEGURIDAD}
-      SMTP_USUARIO: ${SMTP_USUARIO}
-      SMTP_CLAVE: ${SMTP_CLAVE}
-    volumes:
-      - ./app:/var/www/html:Z
-    depends_on:
-      db:
-        condition: service_healthy
-    networks: [sigsm_red]
-
-  db:
-    image: mariadb:11.8
-    container_name: sigsm_db
-    restart: unless-stopped
-    environment:
-      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MARIADB_DATABASE: ${DB_NAME}
-      MARIADB_USER: ${DB_USER}
-      MARIADB_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - db_datos:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
-      interval: 10s
-      retries: 5
-    networks: [sigsm_red]
-
-volumes:
-  db_datos:
-
-networks:
-  sigsm_red:
-```
-
-</details>
-
-<details>
-<summary><code>.env</code> <sub>— contraseñas, nunca se sube a GitHub</sub></summary>
-
-```ini
-DB_ROOT_PASSWORD=cambiar_esto
-DB_NAME=sigsm
-DB_USER=sigsm_app
-DB_PASSWORD=cambiar_esto
-APP_URL=http://192.168.1.19:8080
-
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_SEGURIDAD=tls
-SMTP_USUARIO=cuenta@gmail.com
-SMTP_CLAVE=contraseña_de_aplicacion
-```
+**3 · Contraseñas**
 
 ```bash
-sudo chmod 600 /opt/sigsm/.env
+cd /opt/sigsm/app/docker
+sudo cp .env.example .env
+sudo nano .env            # cambiar las dos contraseñas
+sudo chmod 600 .env
 ```
 
-</details>
+> El `.env` no se sube a GitHub (`.gitignore`) y Apache responde 404 a todo lo de `docker/`.
 
 **4 · Levantar los contenedores**
 
 ```bash
-cd /opt/sigsm
 sudo docker compose up -d --build
-sudo docker compose ps
+sudo docker compose ps     # los 3 en "healthy" / "running"
 ```
 
-**5 · Cargar la base**
+La primera vez, `sigsm_db` carga sola `sigsm.sql` y `datos_prueba.sql`.
+
+**5 · Replicación, usuarios de la base y permisos** (en este orden)
 
 ```bash
-for f in sigsm.sql datos_prueba.sql; do
-  sudo docker exec -i sigsm_db sh -c 'mariadb -u root -p"$MARIADB_ROOT_PASSWORD" sigsm' < app/BaseDatos/$f
+cd /opt/sigsm/app
+
+# Réplica: copia la base al slave y deja la replicación andando
+sudo bash docker/setup_replicacion.sh
+
+# Usuarios de la base: sigsm_app (permisos limitados) y sigsm_admin
+source <(sudo cat docker/.env)
+sed "s/CAMBIAR_clave_app/$DB_PASSWORD/; s/CAMBIAR_clave_admin/$DB_ROOT_PASSWORD/" BaseDatos/usuarios_bd.sql \
+  | sudo docker exec -i sigsm_db sh -c 'mariadb -u root -p"$MARIADB_ROOT_PASSWORD"'
+
+# Apache (usuario 33) tiene que poder guardar los PDF
+sudo chown -R 33:33 Proyecto/Modulo_Documentacion/archivos
+```
+
+**6 · Contraseñas de la aplicación y firewall**
+
+```bash
+for u in eBanfi tLeites mGomez sAlmeida; do
+  sudo docker exec -it sigsm_app php /var/www/html/Proyecto/Servicios_Comunes/Autenticacion/cambiar_contrasena.php $u
 done
 
-# Usuarios de la base con permisos limitados.
-# En la copia, cambiá CAMBIAR_clave_app por el DB_PASSWORD del .env y CAMBIAR_clave_admin por otra clave.
-cp app/BaseDatos/usuarios_bd.sql /tmp/usuarios.sql && nano /tmp/usuarios.sql
-sudo docker exec -i sigsm_db sh -c 'mariadb -u root -p"$MARIADB_ROOT_PASSWORD"' < /tmp/usuarios.sql && rm /tmp/usuarios.sql
-```
-
-**6 · Permisos, contraseña y firewall**
-
-```bash
-# Apache (usuario 33) tiene que poder guardar los PDF
-sudo chown -R 33:33 app/Proyecto/Modulo_Documentacion/archivos
-
-# Contraseña del administrador
-sudo docker exec -it sigsm_app php /var/www/html/Proyecto/Servicios_Comunes/Autenticacion/cambiar_contrasena.php eBanfi
-
-# Abrir el puerto
-sudo firewall-cmd --permanent --add-port=8080/tcp
+sudo firewall-cmd --permanent --add-service=http
 sudo firewall-cmd --reload
 ```
 
-Abrí **http://192.168.1.19:8080** desde cualquier equipo de la red, también desde el celular para probar los QR. ✔
+Abrí **http://192.168.56.101** (la IP de tu servidor). ✔
 
 <details>
 <summary><b>Actualizar a la última versión</b></summary>
@@ -256,7 +182,8 @@ Abrí **http://192.168.1.19:8080** desde cualquier equipo de la red, también de
 
 ```bash
 cd /opt/sigsm/app && sudo git pull
-cd /opt/sigsm && sudo docker compose restart app
+cd docker && sudo docker compose build --pull app && sudo docker compose up -d
+sudo docker exec sigsm_app php -v      # PHP 8.5.12 o más
 ```
 
 </details>
@@ -267,6 +194,7 @@ cd /opt/sigsm && sudo docker compose restart app
 
 ```text
 ├── BaseDatos/              scripts SQL
+├── docker/                 Dockerfile, docker-compose, .env.example, replicación
 ├── Proyecto/
 │   ├── Modulo_Documentacion/   documentos, categorías, QR, inicio
 │   ├── Modulo_Encuestas/       encuestas y resultados

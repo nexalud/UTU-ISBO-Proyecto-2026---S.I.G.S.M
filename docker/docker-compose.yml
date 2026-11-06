@@ -1,0 +1,74 @@
+# S.I.G.S.M. — app web + base de datos (master) + replica (slave)
+# Se usa desde esta carpeta:  cd docker && sudo docker compose up -d
+# Las contrasenas van en docker/.env (no se sube a GitHub, ver .env.example)
+name: sigsm
+
+services:
+  app:
+    build: .
+    container_name: sigsm_app
+    ports:
+      - "80:80"
+    volumes:
+      - ..:/var/www/html:z
+    environment:
+      DB_HOST: db
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - sigsm_red
+    restart: unless-stopped
+
+  db:
+    image: mariadb:11.8
+    container_name: sigsm_db
+    command: --server-id=1 --log-bin=mysql-bin --binlog-format=ROW --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - db_datos:/var/lib/mysql
+      # Solo se cargan cuando el volumen esta vacio (primera instalacion)
+      - ../BaseDatos/sigsm.sql:/docker-entrypoint-initdb.d/01_sigsm.sql:ro,z
+      - ../BaseDatos/datos_prueba.sql:/docker-entrypoint-initdb.d/02_datos_prueba.sql:ro,z
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sigsm_red
+    restart: unless-stopped
+
+  db_slave:
+    image: mariadb:11.8
+    container_name: sigsm_db_slave
+    command: --server-id=2 --relay-log=relay-bin --read-only=1
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - db_slave_datos:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - sigsm_red
+    restart: unless-stopped
+
+networks:
+  sigsm_red:
+
+volumes:
+  db_datos:
+  db_slave_datos:

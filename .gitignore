@@ -14,3 +14,6 @@ desktop.ini
 *.log
 *.bak
 *.tmp
+# ===== Contraseñas del servidor (Docker) =====
+docker/.env
+.env
